@@ -1,0 +1,16 @@
+body {
+    width: 240px;
+    line-height: 1.5;
+}
+
+#heightinput {
+    cursor: pointer;
+}
+
+.inactive > div,
+.inactive > label,
+.inactive > input,
+.inactive > button:not(.toggle){
+    opacity: 0.5;
+    pointer-events: none;
+}
