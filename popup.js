@@ -17,8 +17,10 @@ const RulerElements = {
     toggle: document.querySelector('#ruler-toggle'),
     heightslider: document.querySelector('#ruler-height-slider'),
     heightnum: document.querySelector('#ruler-height-num'),
+    huecontainer: document.querySelector('#ruler-hue-container'),
     hueslider: document.querySelector('#ruler-hue-slider'),
     huenum: document.querySelector('#ruler-hue-num'),
+    bwcontainer: document.querySelector('#ruler-bw-container'),
     black: document.querySelector('#ruler-black'),
     white: document.querySelector('#ruler-white'),
     opacityslider: document.querySelector('#ruler-opacity-slider'),
@@ -148,20 +150,6 @@ RulerElements.toggle.addEventListener('click', event => {
 
 // ON INPUT:
 
-
-// Add input event listener:
-function addOnInputListener(element, partner, ToolObj, toolname, attr) {
-    element.addEventListener('input', event => {
-        partner.value = event.target.value;
-        ToolObj[attr] = event.target.value;
-        saveLocal(toolname, ToolObj);
-        sendMessage(toolname, ToolObj);
-    })
-}
-
-
-
-
 // CHECK BOXES:
 
 // LHA include lists:
@@ -175,38 +163,67 @@ LHAElements.lists.addEventListener('input', function() {
     sendMessage('lha', LHA);
 })
 
-// Ruler Black/White:
+
+// Ruler Black:
 RulerElements.black.addEventListener('input', function() {
     if (this.checked) {
         RULER.bw = "#000000";
         RulerElements.white.checked = false;
+        RulerElements.huecontainer.classList.add('inactive');
     } else {
         RULER.bw = false;
+        RulerElements.huecontainer.classList.remove('inactive');
     }
     saveLocal('ruler', RULER);
     sendMessage('ruler', RULER);
 })
 
+// Ruler White:
 RulerElements.white.addEventListener('input', function() {
     if (this.checked) {
         RULER.bw = "#FFFFFF";
         RulerElements.black.checked = false;
+        RulerElements.huecontainer.classList.add('inactive');
     } else {
         RULER.bw = false;
+        RulerElements.huecontainer.classList.remove('inactive');
     }
     saveLocal('ruler', RULER);
     sendMessage('ruler', RULER);
 })
 
 
+// Hue container listener:
+RulerElements.huecontainer.addEventListener('click', function() {
+    if (RULER.bw) {
+        RULER.bw = false;
+        RulerElements.black.checked = false;
+        RulerElements.white.checked = false;
+        RulerElements.huecontainer.classList.remove('inactive');
+        saveLocal('ruler', RULER);
+        sendMessage('ruler', RULER);
+    }
+})
 
-// LHA Inputs:
+
+// PARTNER INPUTS:
+// Add input event listener:
+function addOnInputListener(element, partner, ToolObj, toolname, attr) {
+    element.addEventListener('input', event => {
+        partner.value = event.target.value;
+        ToolObj[attr] = event.target.value;
+        saveLocal(toolname, ToolObj);
+        sendMessage(toolname, ToolObj);
+    })
+}
+
+
+// LHA Partner Inputs:
 addOnInputListener(LHAElements.slider, LHAElements.num, LHA, "lha", "factor");
 addOnInputListener(LHAElements.num, LHAElements.slider, LHA, "lha", "factor");
 
 
-
-// Ruler Inputs:
+// Ruler Partner Inputs:
 addOnInputListener(RulerElements.heightslider, RulerElements.heightnum, RULER, "ruler", "height");
 addOnInputListener(RulerElements.heightnum, RulerElements.heightslider, RULER, "ruler", "height");
 

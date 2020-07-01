@@ -5,80 +5,78 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MyExtension</title>
     <link rel="stylesheet" href="popup.css">
-</head> 
+</head>
 <body>
     <header><h1>Buddies</h1></header>
     <main>
         <div id="LHAContainer" class="tool-container inactive">
             <!-- Toggle: -->
-            <button id="lha-toggle" class="toggle">Line Height Adjust</button>
-            <br>
-            <br>
-            <!-- Height: -->
-            <input id="lha-slider" type="range" min="0.5" max="4" value="1" step="0.1" />
-            <br>
-            <label for="lha-num">Original Line Height x </label>
-            <input id="lha-num" type="number" min="0.5" max="4" value="1" step="0.1" />
-            <br> 
-            <br>
-            <!-- Include List Elements: -->
-            <input id="include-li" type="checkbox" />
-            <label for="include-li">Include List Items</label>    
-            <br>
-            <!-- <br> -->
-            <!-- Div Select: -->
-            <!-- <button id="div-select-button">Select Divs</button> -->
-        </div>
+            <div id="lha-toggle-container" class="toggle-container">
+                <button id="lha-toggle" class="toggle-button">Line Height Adjust</button>
+            </div>
 
-        <br>
-        <br>
-        <br>
+            <!-- Height: -->
+            <div id="lha-height-container" class="r2-c1">
+                <input id="lha-slider" class="slider-input" type="range" min="0.5" max="4" value="1" step="0.1" />
+                <br>
+                <label for="lha-num">Original&nbsp;&nbsp;&times;&nbsp;</label>
+                <input id="lha-num" type="number" min="0.5" max="4" value="1" step="0.1" />
+            </div>
+
+            <div id="lha-lists-container" class="r2-c2">
+                <!-- Include List Elements: -->
+                <input id="include-li" type="checkbox" />
+                <label for="include-li">Include Lists</label>
+            </div>
+
+            <!-- Div Select: -->
+            <!-- <div id="lha-divselect-container"> -->
+                <!-- <button id="div-select-button">Select Divs</button> -->
+            <!-- </div> -->
+        </div>
 
         <div id="RulerContainer" class="tool-container inactive">
             <!-- Toggle: -->
-            <button id="ruler-toggle" class="toggle">Reader Ruler</button>
-            <br>
-            <br>
-            <br>
-            <!-- Height: -->
-            <input id="ruler-height-slider" type="range" min="10" max="200" value="24" step="1" />
-            <br>
-            <label for="ruler-height-num">Height: </label>
-            <input id="ruler-height-num" type="number" min="10" max="200" value="24" step="1" />
-            <br>
-            <br>
-            <br>
-
-            
-            <!-- Hue: -->
-            <div id="ruler-hue-container">
-                <input id="ruler-hue-slider" type="range" min="0" max="360" value="180" step="1" />
-                <br>
-                <label for="ruler-hue-num">Hue: </label>
-                <input id="ruler-hue-num" type="number" min="0" max="360" value="180" step="1" />    
+            <div id="ruler-toggle-container" class="toggle-container">
+                <button id="ruler-toggle" class="toggle-button">Reader Ruler</button>
             </div>
+
+            <!-- Height: -->
+            <div id="ruler-height-container" class="r2-c1">
+                <input id="ruler-height-slider" class="slider-input" type="range" min="10" max="200" value="24" step="1" />
+                <br>
+                <label for="ruler-height-num">Height:&nbsp;&nbsp;
+                    <input id="ruler-height-num" type="number" min="10" max="200" value="24" step="1" />
+                &nbsp;&nbsp;px</label>
+            </div>
+
+            <!-- Hue: -->
+            <div id="ruler-hue-container" class="r3-c1">
+                <input id="ruler-hue-slider" class="slider-input" type="range" min="0" max="360" value="180" step="1" />
+                <br>
+                <label for="ruler-hue-num">Hue:&nbsp;&nbsp;</label>
+                <input id="ruler-hue-num" type="number" min="0" max="360" value="180" step="1" />
+            </div>
+
             <!-- Black/White -->
-            <div id="ruler-bw-container">
+            <div id="ruler-bw-container" class="r3-c2">
                 <input id="ruler-black" type="checkbox" value="#000000">
                 <label for="ruler-black">Black</label>
+                <br>
                 <input id="ruler-white" type="checkbox" value="#FFFFFF">
-                <label for="ruler-white">White</label>    
+                <label for="ruler-white">White</label>
+            </div>
+            
+            <!-- Opacity: -->
+            <div id="ruler-opacity-container" class="r4-c1">
+                <input id="ruler-opacity-slider" class="slider-input" type="range" min="0" max="100" value="15" step="1" />
+                <br>
+                <label for="ruler-opacity-num">Opacity:&nbsp;&nbsp;
+                    <input id="ruler-opacity-num" type="number" min="0" max="100" value="15" step="1" />
+                &nbsp;&nbsp;%</label>
             </div>
 
-            <br>
-            <br>
-            <!-- Opacity: -->
-            <input id="ruler-opacity-slider" type="range" min="0" max="100" value="15" step="1" />
-            <br>
-            <label for="ruler-opacity-num">Opacity: </label>
-            <input id="ruler-opacity-num" type="number" min="0" max="100" value="15" step="1" />
-            <br>
         </div>
-
-        <br>
-        <br>
-        
-
 
     </main>
 
