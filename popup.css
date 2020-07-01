@@ -13,8 +13,9 @@ h1 {
 .tool-container {
     display: grid;
     grid-template-columns: 60% 40%;
-    margin: 0rem 0.5rem 1rem;
+    margin: 0rem 0.5rem 0.7rem;
     border: 2px solid #ffbdbd;
+    border-radius: 0.5rem;
 }
 
 .toggle-container {
@@ -31,6 +32,7 @@ h1 {
     background-color: #ffbdbd;
     height: 100%;
     width: 100%;
+    overflow: hidden;
     padding: 0.5rem 0rem 0.6rem;
     cursor: pointer;
 }
@@ -77,15 +79,16 @@ h1 {
     cursor: pointer;
 }
 
-.inactive > div:not(.toggle-container),
-.inactive > label,
-.inactive > input,
-.inactive > button:not(.toggle-button){
+
+.tool-container.inactive > div:not(.toggle-container) {
     /* opacity: 0.5; */
     display: none;
     pointer-events: none;
 }
 
+#ruler-hue-container.inactive{
+    opacity: 0.5;
+}
 
 .inactive > div > button.toggle-button{
     background-color: #dddddd;
