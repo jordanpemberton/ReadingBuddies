@@ -1,234 +1,373 @@
 'use strict';
 
-// CONSTS:
+// chrome.storage.local.clear();
 
-// LHA Elements:
-const LHAElements = {
-    container: document.querySelector('#LHAContainer'),
-    toggle: document.querySelector('#lha-toggle'),
-    slider: document.querySelector('#lha-slider'),
-    num: document.querySelector('#lha-num'),
-    lists: document.querySelector('#include-li')
-}
-
-// Ruler Elements:
-const RulerElements = {
-    container: document.querySelector('#RulerContainer'),
-    toggle: document.querySelector('#ruler-toggle'),
-    heightslider: document.querySelector('#ruler-height-slider'),
-    heightnum: document.querySelector('#ruler-height-num'),
-    huecontainer: document.querySelector('#ruler-hue-container'),
-    hueslider: document.querySelector('#ruler-hue-slider'),
-    huenum: document.querySelector('#ruler-hue-num'),
-    bwcontainer: document.querySelector('#ruler-bw-container'),
-    black: document.querySelector('#ruler-black'),
-    white: document.querySelector('#ruler-white'),
-    opacityslider: document.querySelector('#ruler-opacity-slider'),
-    opacitynum: document.querySelector('#ruler-opacity-num')
-}
-
-// LHA object:
+// CONST LHA:
 const LHA = {
-    active: 0,
-    factor: 1,
-    lists: 0,
-};
+    name: "lha",
+    main: {
+        active: 0,
+        collapsed: 1,
+        input: {
+            factor: 1,
+            lists: 0
+        }
+    },
+    elements: {
+        container: document.querySelector('#LHAContainer'),
+        header: document.querySelector('#lha-header'),
+        onoff: document.querySelector('#lha-on-off'),
+        toggle: document.querySelector('#lha-toggle'),
+        input: {
+            factor: {
+                slider: document.querySelector('#lha-slider'),
+                num: document.querySelector('#lha-num')
+            }
+        },
+        checkboxes: { 
+            lists: document.querySelector('#lha-lists')
+        }
+    }
+}
 
-// Ruler object:
+
+// CONST RULER:
 const RULER = {
-    active: 0,
-    height: 24,
-    hue: 180,
-    bw: false,
-    opacity: 15
-};
-
-
-// Save to Local Storage:
-function saveLocal(name, Obj) {
-    chrome.storage.local.set({[name]: Obj});
-}
-
-// Send Message:
-function sendMessage(name, Obj) {
-    chrome.runtime.sendMessage({[name]: Obj});
-}
-
-
-// Update Tool Obj with Storage vals:
-function updateObj(fromstorage, ToolObj) {
-    // Update obj:
-    for (let [attr, value] of Object.entries(fromstorage)) {
-        ToolObj[attr] = value;
+    name: "ruler",
+    main: {
+        active: 0,
+        collapsed: 1,
+        input: {
+            height: 24,
+            hue: 180,
+            black: 0, 
+            white: 0,
+            opacity: 15
+        }
+    },
+    elements: {
+        container: document.querySelector('#RulerContainer'),
+        header: document.querySelector('#ruler-header'),
+        onoff: document.querySelector('#ruler-on-off'),
+        toggle: document.querySelector('#ruler-toggle'),
+        huecontainer: document.querySelector('#ruler-hue-container'),
+        bwcontainer: document.querySelector('#ruler-bw-container'),
+        input: {
+            height: {
+                slider: document.querySelector('#ruler-height-slider'),
+                num: document.querySelector('#ruler-height-num')
+            },
+            hue: {
+                slider: document.querySelector('#ruler-hue-slider'),
+                num: document.querySelector('#ruler-hue-num')
+            },
+            opacity: {
+                slider: document.querySelector('#ruler-opacity-slider'),
+                num: document.querySelector('#ruler-opacity-num')
+            }
+        },
+        checkboxes: { 
+            black: document.querySelector('#ruler-black'),
+            white: document.querySelector('#ruler-white')
+        }
     }
 }
 
 
-// Set the Container Div's "inactive" Class:
-function setContainerClass(ToolObj, ToolEls) {
-    // Sync PopUp Inputs /Styles:
-    if (parseInt(ToolObj.active) === 0) {
-        ToolEls.container.classList.add("inactive");
+// CONST WORDSP:
+const WORDSP = {
+    name: "wordsp",
+    main: {
+        active: 0,
+        collapsed: 1,
+        input: {
+            factor: 1
+        }
+    },
+    elements: {
+        container: document.querySelector('#WordSpContainer'),
+        header: document.querySelector('#wordsp-header'),
+        onoff: document.querySelector('#wordsp-on-off'),
+        toggle: document.querySelector('#wordsp-toggle'),
+        input: {
+            factor: {
+                slider: document.querySelector('#wordsp-slider'),
+                num: document.querySelector('#wordsp-num')
+            }
+        }
+    }
+}
+
+
+
+
+
+
+// SAVE to LOCAL Storage:
+function saveLocal(name, Main) {
+    chrome.storage.local.set({[name]: Main});
+}
+
+
+// SEND MESSAGE:
+function sendMessage(name, Main) {
+    chrome.runtime.sendMessage({[name]: Main});
+}
+
+
+
+
+// UPDATE with Storage Vals (on page load):
+function updateFromStorage(fromstorage, Tool) {
+    // Update Tool:
+    Tool.main = fromstorage;
+
+    // Apply to Popup:
+
+    // Active Status:
+    if (parseInt(Tool.main.active) === 1) {
+        Tool.elements.onoff.innerHTML = "ON";
+        Tool.elements.container.classList.remove("inactive");
     } else {
-        ToolEls.container.classList.remove("inactive");
+        Tool.elements.onoff.innerHTML = "OFF";
+        Tool.elements.container.classList.add("inactive");
+    }
+
+    // Collapsed:
+    if (parseInt(Tool.main.collapsed) === 0) {
+        Tool.elements.container.classList.remove("collapsed");
+    } else {
+        Tool.elements.container.classList.add("collapsed");
+    }
+
+    // Input Vals:
+    for (let [field, value] of Object.entries(Tool.main.input)) {
+        let i = 0;
+        let primary;
+        let partner;
+        // Input:
+        if (Tool.elements.input[field]) {
+            for (let [item, element] of Object.entries(Tool.elements.input[field])) {
+                if (i === 0) {
+                    primary = element;
+                } else if (i === 1) {
+                    partner = element;
+                }
+                i++;
+            }
+            primary.value = value;
+            if (partner !== null) {
+                partner.value = value;
+            }
+        // Checkboxes: 
+        } else if (Tool.elements.checkboxes[field]) {
+            if (parseInt(value) === 1) {
+                Tool.elements.checkboxes[field].checked = true;
+            }
+        }
     }
 }
 
 
-// On popup page load (update objs, sync popup):
-document.addEventListener('DOMContentLoaded', function() {
-    // Get from local storage:
-    // LHA:
-    chrome.storage.local.get('lha', items => {
+
+
+
+// PAGE LOAD Event (update popup els from storage):
+function onPageLoad() {
+    chrome.storage.local.get(['lha', 'ruler', 'wordsp'], items => {
+        console.log(items);
         if (items.lha) {
-            // Update tool obj:
-            updateObj(items.lha, LHA);
-            // Update container class:
-            setContainerClass(LHA, LHAElements);
-            // Sync popup values:
-            LHAElements.slider.value = LHA.factor;
-            LHAElements.num.value = LHA.factor;
-            if (parseInt(LHA.lists) === 1) {
-                LHAElements.lists.checked = true;
-            }
+            updateFromStorage(items.lha, LHA);
         }
-    });
-    // Ruler:
-    chrome.storage.local.get('ruler', items => {
         if (items.ruler) {
-            // Update tool obj:
-            updateObj(items.ruler, RULER);
-            // Update tool status:
-            setContainerClass(RULER, RulerElements);
-            // Sync PopUp Inputs /Styles:
-            RulerElements.heightslider.value = RULER.height;
-            RulerElements.heightnum.value = RULER.height;
-            RulerElements.hueslider.value = RULER.hue;
-            RulerElements.huenum.value = RULER.hue;
-            if (RULER.bw === "#000000") {
-                RulerElements.black.checked = true;
-            }
-            if (RULER.bw === "#FFFFFF") {
-                RulerElements.white.checked = true;
-            }
-            RulerElements.opacityslider.value = RULER.opacity;
-            RulerElements.opacitynum.value = RULER.opacity;
+            updateFromStorage(items.ruler, RULER);
+        }
+        if (items.wordsp) {
+            updateFromStorage(items.wordsp, WORDSP);
         }
     });
+}
+
+// Page Load Listener:
+document.addEventListener('DOMContentLoaded', onPageLoad);
+
+
+
+
+
+// HEADER Event (Expand/Hide):
+function headerEvent(Tool) {
+    if (parseInt(Tool.main.collapsed) === 1) {
+        Tool.main.collapsed = 0;
+        Tool.elements.container.classList.remove("collapsed");
+    } else {
+        Tool.main.collapsed = 1;
+        Tool.elements.container.classList.add("collapsed");
+    }
+    saveLocal(Tool.name, Tool.main);
+    sendMessage(Tool.name, Tool.main);
+}
+
+
+// HEADER Listeners:
+
+// Word Spacer:
+WORDSP.elements.header.addEventListener('click', event => {
+    headerEvent(WORDSP);
+});
+
+// LHA:
+LHA.elements.header.addEventListener('click', event => {
+    headerEvent(LHA);
+});
+
+// Ruler:
+RULER.elements.header.addEventListener('click', event => {
+    headerEvent(RULER);
 });
 
 
-// ON TOGGLE:
 
-// On Toggle Helper Function:
-function toggleEvent(ToolObj, ToolEls, toolname) {
-    if (parseInt(ToolObj.active) === 0) {
-        ToolObj.active = 1;
-        ToolEls.container.classList.remove("inactive");
+
+
+// TOGGLE Event (Active/Inactive):
+function toggleEventWS(Tool) {
+    if (parseInt(Tool.main.active) === 0) {
+        Tool.main.active = 1;
+        Tool.elements.onoff.innerHTML = "ON";
+        Tool.elements.container.classList.remove("inactive");
     } else {
-        ToolObj.active = 0;
-        ToolEls.container.classList.add("inactive");
+        Tool.main.active = 0;
+        Tool.elements.onoff.innerHTML = "OFF";
+        Tool.elements.container.classList.add("inactive");
     }
-    saveLocal(toolname, ToolObj);
-    sendMessage(toolname, ToolObj);
+    saveLocal(Tool.name, Tool.main);
+    sendMessage(Tool.name, Tool.main);
+}
+
+// TOGGLE Listeners:
+
+// Word Spacer:
+WORDSP.elements.toggle.addEventListener('click', event => {
+    toggleEventWS(WORDSP);
+});
+
+// LHA:
+LHA.elements.toggle.addEventListener('click', event => {
+    toggleEventWS(LHA);
+});
+
+// Ruler:
+RULER.elements.toggle.addEventListener('click', event => {
+    toggleEventWS(RULER);
+});
+
+
+
+
+// INPUT:
+
+// Input Event:
+function inputEvent(Tool, field, primary, partner=null) {
+    Tool.main.input[field] = primary.value;
+    if (partner !== null) {
+        partner.value = primary.value;
+    }
+    saveLocal(Tool.name, Tool.main);
+    sendMessage(Tool.name, Tool.main);
+}
+
+// Add Input Listener:
+function addInputListener(Tool, field, primary, partner=null) {
+    primary.addEventListener('input', function() {
+        inputEvent(Tool, field, primary, partner);
+    });
+    if (partner !== null) {
+        partner.addEventListener('input', function() {
+            inputEvent(Tool, field, partner, primary);
+        })
+    }
+}
+
+
+// Get Input Elements:
+function getInputElements(Tool) {
+    let input = Tool.elements.input;
+    for (let [field, info] of Object.entries(input)) {
+        let i=0;
+        let primary;
+        let partner;
+        for (let [name, element] of Object.entries(info)) {
+            if (i=== 0) {
+                primary = element;
+            }
+            if (i===1) {
+                partner = element;
+            }
+            i+=1;
+        }
+        addInputListener(Tool, field, primary, partner);
+    }
 }
 
 
 
-// LHA Toggle Event:
-LHAElements.toggle.addEventListener('click', event => {
-    toggleEvent(LHA, LHAElements, "lha");
-});
+// LHA input:
+getInputElements(LHA);
+
+// RULER input:
+getInputElements(RULER);
+
+// WORDSP input:
+getInputElements(WORDSP);
 
 
-// Ruler Toggle Event:
-RulerElements.toggle.addEventListener('click', event => {
-    toggleEvent(RULER, RulerElements, "ruler");
-});
 
 
-
-// ON INPUT:
-
-// CHECK BOXES:
-
-// LHA include lists:
-LHAElements.lists.addEventListener('input', function() {
-    if (this.checked) {
-        LHA.lists = 1;
-    } else {
-        LHA.lists = 0;
-    }
-    saveLocal('lha', LHA);
-    sendMessage('lha', LHA);
-})
+// CHECKBOXES:
 
 
-// Ruler Black:
-RulerElements.black.addEventListener('input', function() {
-    if (this.checked) {
-        RULER.bw = "#000000";
-        RulerElements.white.checked = false;
-        RulerElements.huecontainer.classList.add('inactive');
-    } else {
-        RULER.bw = false;
-        RulerElements.huecontainer.classList.remove('inactive');
-    }
-    saveLocal('ruler', RULER);
-    sendMessage('ruler', RULER);
-})
-
-// Ruler White:
-RulerElements.white.addEventListener('input', function() {
-    if (this.checked) {
-        RULER.bw = "#FFFFFF";
-        RulerElements.black.checked = false;
-        RulerElements.huecontainer.classList.add('inactive');
-    } else {
-        RULER.bw = false;
-        RulerElements.huecontainer.classList.remove('inactive');
-    }
-    saveLocal('ruler', RULER);
-    sendMessage('ruler', RULER);
-})
-
-
-// Hue container listener:
-RulerElements.huecontainer.addEventListener('click', function() {
-    if (RULER.bw) {
-        RULER.bw = false;
-        RulerElements.black.checked = false;
-        RulerElements.white.checked = false;
-        RulerElements.huecontainer.classList.remove('inactive');
-        saveLocal('ruler', RULER);
-        sendMessage('ruler', RULER);
-    }
-})
-
-
-// PARTNER INPUTS:
-// Add input event listener:
-function addOnInputListener(element, partner, ToolObj, toolname, attr) {
-    element.addEventListener('input', event => {
-        partner.value = event.target.value;
-        ToolObj[attr] = event.target.value;
-        saveLocal(toolname, ToolObj);
-        sendMessage(toolname, ToolObj);
-    })
+// Add Checkbox Listener:
+function checkboxEvent(Tool, field, partner=null, rival=null) {
+    Tool.elements.checkboxes[field].addEventListener('input', function() {
+        if (this.checked) {
+            Tool.main.input[field] = 1;
+            if (partner !== null) {
+                Tool.main.input[partner] = 0;
+                Tool.elements.checkboxes[partner].checked = false;
+            } 
+            if (rival !== null) {
+                rival.classList.add('inactive');
+            }
+        } else {
+            Tool.main.input[field] = 0;
+            if (rival !== null) {
+                rival.classList.remove('inactive');
+            }
+        }
+        saveLocal(Tool.name, Tool.main);
+        sendMessage(Tool.name, Tool.main);
+    });
 }
 
+checkboxEvent(LHA, 'lists');
 
-// LHA Partner Inputs:
-addOnInputListener(LHAElements.slider, LHAElements.num, LHA, "lha", "factor");
-addOnInputListener(LHAElements.num, LHAElements.slider, LHA, "lha", "factor");
+checkboxEvent(RULER, 'black', 'white', RULER.elements.huecontainer);
+checkboxEvent(RULER, 'white', 'black', RULER.elements.huecontainer);
 
 
-// Ruler Partner Inputs:
-addOnInputListener(RulerElements.heightslider, RulerElements.heightnum, RULER, "ruler", "height");
-addOnInputListener(RulerElements.heightnum, RulerElements.heightslider, RULER, "ruler", "height");
 
-addOnInputListener(RulerElements.hueslider, RulerElements.huenum, RULER, "ruler", "hue");
-addOnInputListener(RulerElements.huenum, RulerElements.hueslider, RULER, "ruler", "hue");
-
-addOnInputListener(RulerElements.opacityslider, RulerElements.opacitynum, RULER, "ruler", "opacity");
-addOnInputListener(RulerElements.opacitynum, RulerElements.opacityslider, RULER, "ruler", "opacity");
+// HUE CONTAINER Listener:
+RULER.elements.huecontainer.addEventListener('click', function() {
+    if (RULER.main.input.black == 1) {
+        RULER.main.input.black = 0;
+        RULER.elements.checkboxes.black.checked = false;
+    }
+    if (RULER.main.input.white == 1) {
+        RULER.main.input.white = 0;
+        RULER.elements.checkboxes.white.checked = false;
+    }
+    RULER.elements.huecontainer.classList.remove('inactive');
+    saveLocal(RULER.name, RULER.main);
+    sendMessage(RULER.name, RULER.main);
+})

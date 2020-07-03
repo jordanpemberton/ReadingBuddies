@@ -15,10 +15,11 @@ if (!ruler) {
 // Set ruler properties:
 if (rulerinput) {
     let active = rulerinput.active;
-    let height = rulerinput.height;
-    let hue = rulerinput.hue;
-    let opacity = rulerinput.opacity;
-    let bw = rulerinput.bw;
+    let height = rulerinput.input.height;
+    let hue = rulerinput.input.hue;
+    let opacity = rulerinput.input.opacity;
+    let black = rulerinput.input.black;
+    let white = rulerinput.input.white;
 
     if (parseInt(active) === 0) {
         ruler.classList.add("inactive");
@@ -35,14 +36,14 @@ if (rulerinput) {
     });
 
     // Color:
-    // If B/W:
-    if (bw != false) {
-        ruler.style.setProperty('--hue', bw);
+    if (black == 1) {
+        ruler.style.setProperty('--hue', '#000000');
+    } else if (white == 1) {
+        ruler.style.setProperty('--hue', '#FFFFFF');    
     } else {
-        // Hue:
         ruler.style.setProperty('--hue', `hsl(${hue}, 100%, 50%)`);
     }
-
+    
     // Opacity:
     ruler.style.setProperty('--opacity', `${opacity/100}`);
 }
