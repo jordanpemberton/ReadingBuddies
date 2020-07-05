@@ -27,15 +27,15 @@
     
             <!-- Height: -->
             <div id="lha-height-container" class="r3-c1 input-container">
-                <input id="lha-slider" class="slider-input" type="range" min="0.5" max="4" value="1" step="0.1" />
+                <input id="lha-slider" class="slider-input" type="range" min="0.5" max="4" value="1.5" step="0.1" />
                 <br>
                 <label for="lha-num">Original &times;</label>
-                <input id="lha-num" type="number" min="0.5" max="4" value="1" step="0.1" />
+                <input id="lha-num" class="num-input" type="number" min="0.5" max="4" value="1.5" step="0.1" />
             </div>
 
             <!-- Lists: -->
             <div id="lha-lists-container" class="r3-c2 input-container">
-                <input id="lha-lists" type="checkbox" value="1" />
+                <input id="lha-lists" type="checkbox" value="0" />
                 <label for="lha-lists">Include Lists</label>
             </div>
 
@@ -67,7 +67,7 @@
                 <input id="ruler-height-slider" class="slider-input" type="range" min="10" max="200" value="24" step="1" />
                 <br>
                 <label for="ruler-height-num">Height:  
-                    <input id="ruler-height-num" type="number" min="10" max="200" value="24" step="1" />
+                    <input id="ruler-height-num" class="num-input" type="number" min="10" max="200" value="24" step="1" />
                 px</label>
             </div>
 
@@ -76,7 +76,7 @@
                 <input id="ruler-hue-slider" class="slider-input" type="range" min="0" max="360" value="180" step="1" />
                 <br>
                 <label for="ruler-hue-num">Hue: </label>
-                <input id="ruler-hue-num" type="number" min="0" max="360" value="180" step="1" />
+                <input id="ruler-hue-num" class="num-input" type="number" min="0" max="360" value="180" step="1" />
             </div>
 
             <!-- Black/White -->
@@ -93,7 +93,7 @@
                 <input id="ruler-opacity-slider" class="slider-input" type="range" min="0" max="100" value="15" step="1" />
                 <br>
                 <label for="ruler-opacity-num">Opacity:  
-                    <input id="ruler-opacity-num" type="number" min="0" max="100" value="15" step="1" />
+                    <input id="ruler-opacity-num" class="num-input" type="number" min="0" max="100" value="15" step="1" />
                 %</label>
             </div>
 
@@ -118,22 +118,25 @@
             
             <!-- Input: -->
             <div id="wordsp-container" class="r3-c1 input-container">
-                <input id="wordsp-slider" class="slider-input" type="range" min="1" max="4" value="2" step="0.1" />
+                <input id="wordsp-slider" class="slider-input" type="range" min="0.25" max="2.5" value="0.5" step="0.02" />
                 <br>
-                <label for="wordsp-num">Original &times;  
-                    <input id="wordsp-num" type="number" min="1" max="4" value="2" step="0.1" />
-                </label>
+                <label for="wordsp-num">Word Spacing:   
+                    <input id="wordsp-num" class="num-input" type="number" min="0.25" max="2.5" value="0.5" step="0.02" />
+                em</label>
+            </div>
+
+            <!-- Lists: -->
+            <div id="wordsp-lists-container" class="r3-c2 input-container">
+                <input id="wordsp-lists" type="checkbox" value="0" />
+                <label for="wordsp-lists">Include Lists</label>
             </div>
         </div> 
 
     </main>
 
 
-    <!-- <script type="text/javascript" src="popup.js"></script> -->
-    <!-- <script type="text/javascript" src="popupRuler.js"></script> -->
-    <!-- <script type="text/javascript" src="popupLHA.js"></script> --> 
+    <script type="text/javascript" src="popup.js"></script>
     <!-- <script type="text/javascript" src="popupDivSelect.js"></script> -->
-    <script type="text/javascript" src="popupWordSp.js"></script>
 
 </body>
 </html>

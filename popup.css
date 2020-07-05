@@ -2,12 +2,12 @@
 :root {
     --header-color: #dddddd;
     --sleep-color: #dddddd;
-    --awake-color: #ffbdbd;
+    --awake-color: #91e0ff;
 }
 
 /* BODY */
 body {
-    width: 280px;
+    width: 300px;
     margin: 0;
 }
 
@@ -128,8 +128,16 @@ h1 {
 }
 
 
+/* NUMBER INPUT */
+.num-input {
+    width: 45px;
+    padding: 0 0 0 0.2em;
+}
+
+
+
 /* COLLAPSED */
-.tool-container.collapsed > div:not(.toggle):not(.tool-header):not(.on-off-container) {
+.tool-container.collapsed > div:not(.tool-header):not(.on-off-container) {
     display: none;
     pointer-events: none;
 }
@@ -141,12 +149,11 @@ h1 {
     border: 2px solid var(--sleep-color);
 }
 
-.tool-container.inactive > div:not(.toggle):not(.tool-header):not(.on-off-container):not(.toggle-container) {
+.tool-container.inactive > div:not(.tool-header):not(.on-off-container):not(.toggle-container) {
     opacity: 0.5;
     pointer-events: none;
 }
 
-.tool-container.inactive > div.toggle,
 .tool-container.inactive > div.tool-header {
     background-color: var(--sleep-color);
 }

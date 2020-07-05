@@ -64,14 +64,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     }
     // WORDSP:
     if (request.wordsp) {
-        // applyAllTabs("wordsp", request.wordsp, false);
-        chrome.tabs.query({currentWindow: true}, function(tabs) {
-            for (let i in tabs) {
-                chrome.tabs.executeScript(tabs[i].id, {
-                    code:   `console.log(${JSON.stringify(request.wordsp)});`
-                });
-            }
-        });
+        applyAllTabs("wordsp", request.wordsp, false);
     }
 
 });
@@ -95,6 +88,9 @@ chrome.tabs.onUpdated.addListener( function(tabId, changeInfo, tab) {
                 applyAllTabs("ruler", items.ruler, true);
             }
             // WORDSP:
+            if (items.wordsp) {
+                applyAllTabs("wordsp", request.wordsp, false);
+            }
         });
     }
 });

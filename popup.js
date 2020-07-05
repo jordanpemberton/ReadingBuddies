@@ -1,6 +1,7 @@
 'use strict';
 
-// chrome.storage.local.clear();
+// Testing:
+chrome.storage.local.clear();
 
 // CONST LHA:
 const LHA = {
@@ -9,7 +10,7 @@ const LHA = {
         active: 0,
         collapsed: 1,
         input: {
-            factor: 1,
+            factor: 1.5,
             lists: 0
         }
     },
@@ -81,7 +82,8 @@ const WORDSP = {
         active: 0,
         collapsed: 1,
         input: {
-            factor: 1
+            spacing: 1, 
+            lists: 0
         }
     },
     elements: {
@@ -90,10 +92,13 @@ const WORDSP = {
         onoff: document.querySelector('#wordsp-on-off'),
         toggle: document.querySelector('#wordsp-toggle'),
         input: {
-            factor: {
+            spacing: {
                 slider: document.querySelector('#wordsp-slider'),
                 num: document.querySelector('#wordsp-num')
             }
+        },
+        checkboxes: { 
+            lists: document.querySelector('#wordsp-lists')
         }
     }
 }
@@ -351,6 +356,7 @@ function checkboxEvent(Tool, field, partner=null, rival=null) {
 }
 
 checkboxEvent(LHA, 'lists');
+checkboxEvent(WORDSP, 'lists');
 
 checkboxEvent(RULER, 'black', 'white', RULER.elements.huecontainer);
 checkboxEvent(RULER, 'white', 'black', RULER.elements.huecontainer);
