@@ -1,7 +1,7 @@
 'use strict';
 
 // Testing:
-chrome.storage.local.clear();
+// chrome.storage.local.clear();
 
 // CONST LHA:
 const LHA = {
