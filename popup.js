@@ -25,7 +25,7 @@ const LHA = {
                 num: document.querySelector('#lha-num')
             }
         },
-        checkboxes: { 
+        checkboxes: {
             lists: document.querySelector('#lha-lists')
         }
     }
@@ -41,7 +41,7 @@ const RULER = {
         input: {
             height: 24,
             hue: 180,
-            black: 0, 
+            black: 0,
             white: 0,
             opacity: 15
         }
@@ -67,7 +67,7 @@ const RULER = {
                 num: document.querySelector('#ruler-opacity-num')
             }
         },
-        checkboxes: { 
+        checkboxes: {
             black: document.querySelector('#ruler-black'),
             white: document.querySelector('#ruler-white')
         }
@@ -75,30 +75,48 @@ const RULER = {
 }
 
 
-// CONST WORDSP:
-const WORDSP = {
-    name: "wordsp",
+// CONST SPACING:
+const SPACING = {
+    name: "spacing",
     main: {
         active: 0,
+        childrenactive: {
+            wordsp: 0,
+            lettersp: 0
+        },
         collapsed: 1,
         input: {
-            spacing: 1, 
-            lists: 0
+            wordspacing: 0.4,
+            wordsplists: 0,
+            letterspacing: 0.04,
+            lettersplists: 0
         }
     },
     elements: {
-        container: document.querySelector('#WordSpContainer'),
-        header: document.querySelector('#wordsp-header'),
-        onoff: document.querySelector('#wordsp-on-off'),
-        toggle: document.querySelector('#wordsp-toggle'),
+        container: document.querySelector('#SpacingContainer'),
+        childcontainers: {
+            wordsp: document.querySelector('#WordSpContainer'),
+            lettersp: document.querySelector('#LetterSpContainer')
+        },
+        header: document.querySelector('#spacing-header'),
+        onoff: document.querySelector('#spacing-on-off'),
+        childrentoggles: {
+            wordsp: document.querySelector('#wordsp-toggle'),
+            lettersp: document.querySelector('#lettersp-toggle')
+        },
         input: {
-            spacing: {
+            wordspacing: {
                 slider: document.querySelector('#wordsp-slider'),
                 num: document.querySelector('#wordsp-num')
+            },
+            letterspacing: {
+                slider: document.querySelector('#lettersp-slider'),
+                num: document.querySelector('#lettersp-num')
             }
         },
-        checkboxes: { 
-            lists: document.querySelector('#wordsp-lists')
+        checkboxes: {
+            wordsplists: document.querySelector('#wordsp-lists'),
+            lettersplists: document.querySelector('#lettersp-lists')
         }
     }
 }
@@ -130,16 +148,35 @@ function updateFromStorage(fromstorage, Tool) {
     // Apply to Popup:
 
     // Active Status:
-    if (parseInt(Tool.main.active) === 1) {
-        Tool.elements.onoff.innerHTML = "ON";
+    if (Tool.main.active == 1) {
+        Tool.elements.onoff.textContent = "ON";
+        if (Tool.elements.toggle) {
+            Tool.elements.toggle.value = "Disable";
+        }
         Tool.elements.container.classList.remove("inactive");
     } else {
-        Tool.elements.onoff.innerHTML = "OFF";
+        Tool.elements.onoff.textContent = "OFF";
+        if (Tool.elements.toggle) {
+            Tool.elements.toggle.value = "Enable";
+        }
         Tool.elements.container.classList.add("inactive");
     }
 
+    // Child tools status/ toggles:
+    if (Tool.main.childrenactive) {
+        for (let [child, status] of Object.entries(Tool.main.childrenactive)) {
+            if (status == 1) {
+                Tool.elements.childrentoggles[child].value = "Disable";
+                Tool.elements.childcontainers[child].classList.remove("inactive");
+            } else {
+                Tool.elements.childrentoggles[child].value = "Enable";
+                Tool.elements.childcontainers[child].classList.add("inactive");
+            }
+        }
+    }
+
     // Collapsed:
-    if (parseInt(Tool.main.collapsed) === 0) {
+    if (Tool.main.collapsed == 0) {
         Tool.elements.container.classList.remove("collapsed");
     } else {
         Tool.elements.container.classList.add("collapsed");
@@ -164,9 +201,9 @@ function updateFromStorage(fromstorage, Tool) {
             if (partner !== null) {
                 partner.value = value;
             }
-        // Checkboxes: 
+        // Checkboxes:
         } else if (Tool.elements.checkboxes[field]) {
-            if (parseInt(value) === 1) {
+            if (value == 1) {
                 Tool.elements.checkboxes[field].checked = true;
             }
         }
@@ -179,16 +216,15 @@ function updateFromStorage(fromstorage, Tool) {
 
 // PAGE LOAD Event (update popup els from storage):
 function onPageLoad() {
-    chrome.storage.local.get(['lha', 'ruler', 'wordsp'], items => {
-        console.log(items);
+    chrome.storage.local.get(['lha', 'ruler', 'spacing'], items => {
         if (items.lha) {
             updateFromStorage(items.lha, LHA);
         }
         if (items.ruler) {
             updateFromStorage(items.ruler, RULER);
         }
-        if (items.wordsp) {
-            updateFromStorage(items.wordsp, WORDSP);
+        if (items.spacing) {
+            updateFromStorage(items.spacing, SPACING);
         }
     });
 }
@@ -202,7 +238,7 @@ document.addEventListener('DOMContentLoaded', onPageLoad);
 
 // HEADER Event (Expand/Hide):
 function headerEvent(Tool) {
-    if (parseInt(Tool.main.collapsed) === 1) {
+    if (Tool.main.collapsed == 1) {
         Tool.main.collapsed = 0;
         Tool.elements.container.classList.remove("collapsed");
     } else {
@@ -216,9 +252,9 @@ function headerEvent(Tool) {
 
 // HEADER Listeners:
 
-// Word Spacer:
-WORDSP.elements.header.addEventListener('click', event => {
-    headerEvent(WORDSP);
+// Spacing:
+SPACING.elements.header.addEventListener('click', event => {
+    headerEvent(SPACING);
 });
 
 // LHA:
@@ -236,35 +272,80 @@ RULER.elements.header.addEventListener('click', event => {
 
 
 // TOGGLE Event (Active/Inactive):
-function toggleEventWS(Tool) {
-    if (parseInt(Tool.main.active) === 0) {
+function toggleEvent(Tool) {
+    if (Tool.main.active == 0) {
         Tool.main.active = 1;
-        Tool.elements.onoff.innerHTML = "ON";
+        Tool.elements.onoff.textContent = "ON";
+        if (Tool.elements.toggle) {
+            Tool.elements.toggle.value = "Disable";
+        }
         Tool.elements.container.classList.remove("inactive");
     } else {
         Tool.main.active = 0;
-        Tool.elements.onoff.innerHTML = "OFF";
+        Tool.elements.onoff.textContent = "OFF";
+        if (Tool.elements.toggle) {
+            Tool.elements.toggle.value = "Enable";
+        }
         Tool.elements.container.classList.add("inactive");
     }
     saveLocal(Tool.name, Tool.main);
     sendMessage(Tool.name, Tool.main);
 }
 
-// TOGGLE Listeners:
 
-// Word Spacer:
-WORDSP.elements.toggle.addEventListener('click', event => {
-    toggleEventWS(WORDSP);
-});
+// CHILD TOGGLE Event:
+function childToggleEvent(Tool, child, sibling) {
+
+    if (Tool.main.childrenactive[child] == 0) {
+        
+        Tool.main.active = 1;
+        Tool.elements.container.classList.remove("inactive");
+        Tool.elements.onoff.textContent = "ON";
+
+        Tool.main.childrenactive[child] = 1;
+        Tool.elements.childrentoggles[child].value = "Disable";
+        Tool.elements.childcontainers[child].classList.remove("inactive");
+    
+    } else {
+
+        if (Tool.main.childrenactive[sibling] == 0) {
+            Tool.main.active = 0;
+            Tool.elements.container.classList.add("inactive");
+            Tool.elements.onoff.textContent = "OFF";    
+        }
+
+        Tool.main.childrenactive[child] = 0;
+        Tool.elements.childrentoggles[child].value = "Enable";
+        Tool.elements.childcontainers[child].classList.add("inactive");    
+    }
+
+    saveLocal(Tool.name, Tool.main);
+    sendMessage(Tool.name, Tool.main);    
+}
+
+
+
+
+
+// TOGGLE Listeners:
 
 // LHA:
 LHA.elements.toggle.addEventListener('click', event => {
-    toggleEventWS(LHA);
+    toggleEvent(LHA);
 });
 
 // Ruler:
 RULER.elements.toggle.addEventListener('click', event => {
-    toggleEventWS(RULER);
+    toggleEvent(RULER);
+});
+
+// Spacing:
+SPACING.elements.childrentoggles.wordsp.addEventListener('click', event => {
+    childToggleEvent(SPACING, "wordsp", "lettersp");
+});
+
+SPACING.elements.childrentoggles.lettersp.addEventListener('click', event => {
+    childToggleEvent(SPACING, "lettersp", "wordsp");
 });
 
 
@@ -323,8 +404,8 @@ getInputElements(LHA);
 // RULER input:
 getInputElements(RULER);
 
-// WORDSP input:
-getInputElements(WORDSP);
+// SPACING input:
+getInputElements(SPACING);
 
 
 
@@ -340,7 +421,7 @@ function checkboxEvent(Tool, field, partner=null, rival=null) {
             if (partner !== null) {
                 Tool.main.input[partner] = 0;
                 Tool.elements.checkboxes[partner].checked = false;
-            } 
+            }
             if (rival !== null) {
                 rival.classList.add('inactive');
             }
@@ -356,7 +437,8 @@ function checkboxEvent(Tool, field, partner=null, rival=null) {
 }
 
 checkboxEvent(LHA, 'lists');
-checkboxEvent(WORDSP, 'lists');
+checkboxEvent(SPACING, 'wordsplists');
+checkboxEvent(SPACING, 'lettersplists');
 
 checkboxEvent(RULER, 'black', 'white', RULER.elements.huecontainer);
 checkboxEvent(RULER, 'white', 'black', RULER.elements.huecontainer);

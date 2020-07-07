@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="popup.css">
 </head>
 <body>
-    <header><h1>Buddies</h1></header>
+    <header><h1>Reading Buddies</h1></header>
     <main>
         <!-- LHA -->
         <div id="LHAContainer" class="tool-container collapsed inactive">
@@ -100,36 +100,75 @@
         </div>
 
 
-        <!-- WORD SPACER -->
-        <div id="WordSpContainer" class="tool-container collapsed inactive">
+        <!-- SPACING -->
+        <div id="SpacingContainer" class="tool-container collapsed inactive">
             <!-- Header: -->
-            <div id="wordsp-header" class="tool-header r1-c1">
-                <p id="wordsp-title" class="tool-title">Word Spacer</p>
+            <div id="spacing-header" class="tool-header r1-c1">
+                <p id="spacing-title" class="tool-title">Spacing Adjust</p>
             </div>
             <!-- Status Light: -->
             <div class="on-off-container r1-c2">
-                <p id="wordsp-on-off" class="on-off">OFF</p>
+                <p id="spacing-on-off" class="on-off">OFF</p>
             </div>
 
-            <!-- Toggle: -->
-            <div id="wordsp-toggle-container" class="r2-c1 toggle-container">
-                <input id="wordsp-toggle" class="toggle-button" type="button" value="Enable" />
+            <!-- WORDSP -->
+            <div id="WordSpContainer" class="child-container inactive child1">
+                <!-- WORD SP Header/Title: -->
+                <div id="wordsp-header" class="child-tool-header ch-r1c1">
+                    <p id="wordsp-title" class="child-tool-title">Word Spacer</p>
+                </div>
+
+                <!-- Toggle: -->
+                <div id="wordsp-toggle-container" class="child-toggle-container r1-c2">
+                    <input id="wordsp-toggle" class="child-toggle-button" type="button" value="Enable" />
+                </div>
+
+                <!-- Word Space Input: -->
+                <div id="wordsp-input-container" class="input-container ch-r2c1">
+                    <input id="wordsp-slider" class="slider-input" type="range" min="0.1" max="1.5" value="0.4" step="0.1" />
+                    <br>
+                    <label for="wordsp-num">Word Spacing:   
+                        <input id="wordsp-num" class="num-input" type="number" min="0.1" max="1.5" value="0.4" step="0.1" />
+                    em</label>
+                </div>
+
+                <!-- Lists: -->
+                <div id="wordsp-lists-container" class="input-container r2-c2">
+                    <input id="wordsp-lists" type="checkbox" value="0" />
+                    <label for="wordsp-lists">Include Lists</label>
+                </div>
             </div>
             
-            <!-- Input: -->
-            <div id="wordsp-container" class="r3-c1 input-container">
-                <input id="wordsp-slider" class="slider-input" type="range" min="0.25" max="2.5" value="0.5" step="0.02" />
-                <br>
-                <label for="wordsp-num">Word Spacing:   
-                    <input id="wordsp-num" class="num-input" type="number" min="0.25" max="2.5" value="0.5" step="0.02" />
-                em</label>
+            
+            <!-- LETTERSP -->
+            <div id="LetterSpContainer" class="child-container inactive child2">
+                <!-- LETTER SP Header/Title: -->
+                <div id="lettersp-header" class="child-tool-header">
+                    <p id="lettersp-title" class="child-tool-title">Letter Spacer</p>
+                </div>
+
+                <!-- Toggle: -->
+                <div id="lettersp-toggle-container" class="child-toggle-container">
+                    <input id="lettersp-toggle" class="child-toggle-button" type="button" value="Enable" />
+                </div>
+
+
+                <!-- Letter Space Input: -->
+                <div id="lettersp-input-container" class="input-container">
+                    <input id="lettersp-slider" class="slider-input" type="range" min="0.01" max="1" value="0.04" step="0.01" />
+                    <br>
+                    <label for="lettersp-num">Letter Spacing:   
+                        <input id="lettersp-num" class="num-input" type="number" min="0.01" max="1" value="0.04" step="0.01" />
+                    em</label>
+                </div>
+
+                <!-- Lists: -->
+                <div id="lettersp-lists-container" class="input-container">
+                    <input id="lettersp-lists" type="checkbox" value="0" />
+                    <label for="lettersp-lists">Include Lists</label>
+                </div>
             </div>
 
-            <!-- Lists: -->
-            <div id="wordsp-lists-container" class="r3-c2 input-container">
-                <input id="wordsp-lists" type="checkbox" value="0" />
-                <label for="wordsp-lists">Include Lists</label>
-            </div>
         </div> 
 
     </main>
