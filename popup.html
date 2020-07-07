@@ -24,7 +24,7 @@
             <div id="lha-toggle-container" class="r2-c1 toggle-container">
                 <input id="lha-toggle" class="toggle-button" type="button" value="Enable" />
             </div>
-    
+
             <!-- Height: -->
             <div id="lha-height-container" class="r3-c1 input-container">
                 <input id="lha-slider" class="slider-input" type="range" min="0.5" max="4" value="1.5" step="0.1" />
@@ -66,7 +66,7 @@
             <div id="ruler-height-container" class="r3-c1 input-container">
                 <input id="ruler-height-slider" class="slider-input" type="range" min="10" max="200" value="24" step="1" />
                 <br>
-                <label for="ruler-height-num">Height:  
+                <label for="ruler-height-num">Height:
                     <input id="ruler-height-num" class="num-input" type="number" min="10" max="200" value="24" step="1" />
                 px</label>
             </div>
@@ -87,18 +87,17 @@
                 <input id="ruler-white" type="checkbox" value="1">
                 <label for="ruler-white">White</label>
             </div>
-            
+
             <!-- Opacity: -->
             <div id="ruler-opacity-container" class="r5-c1 input-container">
                 <input id="ruler-opacity-slider" class="slider-input" type="range" min="0" max="100" value="15" step="1" />
                 <br>
-                <label for="ruler-opacity-num">Opacity:  
+                <label for="ruler-opacity-num">Opacity:
                     <input id="ruler-opacity-num" class="num-input" type="number" min="0" max="100" value="15" step="1" />
                 %</label>
             </div>
 
         </div>
-
 
         <!-- SPACING -->
         <div id="SpacingContainer" class="tool-container collapsed inactive">
@@ -127,7 +126,7 @@
                 <div id="wordsp-input-container" class="input-container ch-r2c1">
                     <input id="wordsp-slider" class="slider-input" type="range" min="0.1" max="1.5" value="0.4" step="0.1" />
                     <br>
-                    <label for="wordsp-num">Word Spacing:   
+                    <label for="wordsp-num">Word Spacing:
                         <input id="wordsp-num" class="num-input" type="number" min="0.1" max="1.5" value="0.4" step="0.1" />
                     em</label>
                 </div>
@@ -138,8 +137,8 @@
                     <label for="wordsp-lists">Include Lists</label>
                 </div>
             </div>
-            
-            
+
+
             <!-- LETTERSP -->
             <div id="LetterSpContainer" class="child-container inactive child2">
                 <!-- LETTER SP Header/Title: -->
@@ -155,10 +154,10 @@
 
                 <!-- Letter Space Input: -->
                 <div id="lettersp-input-container" class="input-container">
-                    <input id="lettersp-slider" class="slider-input" type="range" min="0.01" max="1" value="0.04" step="0.01" />
+                    <input id="lettersp-slider" class="slider-input" type="range" min="0" max="0.5" value="0.1" step="0.01" />
                     <br>
-                    <label for="lettersp-num">Letter Spacing:   
-                        <input id="lettersp-num" class="num-input" type="number" min="0.01" max="1" value="0.04" step="0.01" />
+                    <label for="lettersp-num">Letter Spacing:
+                        <input id="lettersp-num" class="num-input" type="number" min="0" max="0.5" value="0.1" step="0.01" />
                     em</label>
                 </div>
 
@@ -169,7 +168,77 @@
                 </div>
             </div>
 
-        </div> 
+        </div>
+
+        <!-- FONT -->
+        <div id="FontContainer" class="tool-container collapsed inactive">
+            <!-- Header: -->
+            <div id="font-header" class="tool-header r1-c1">
+                <p id="font-title" class="tool-title">Font Adjust</p>
+            </div>
+            <!-- Status Light: -->
+            <div class="on-off-container r1-c2">
+                <p id="font-on-off" class="on-off">OFF</p>
+            </div>
+
+            <!-- FONT FAMILY -->
+            <div id="FontFamContainer" class="child-container inactive child1">
+                <!-- FONT FAM Header/Title: -->
+                <div id="fontfam-header" class="child-tool-header ch-r1c1">
+                    <p id="fontfam-title" class="child-tool-title">Font Family</p>
+                </div>
+                <!-- Toggle: -->
+                <div id="fontfam-toggle-container" class="child-toggle-container r1-c2">
+                    <input id="fontfam-toggle" class="child-toggle-button" type="button" value="Enable" />
+                </div>
+
+                <!-- Font Family Input: -->
+                <div id="fontfam-input-container" class="input-container ch-r2c1">
+                    <select name="fontfam" id="fontfam">
+                        <option value="arial">Arial</option>
+                        <option value="times">Times New Roman</option>
+                        <option value="comic">Comic Sans</option>
+                    </select>
+                    
+                </div>
+
+                <!-- Lists: -->
+                <div id="fontfam-lists-container" class="input-container r2-c2">
+                    <input id="fontfam-lists" type="checkbox" value="0" />
+                    <label for="fontfam-lists">Include Lists</label>
+                </div>
+            </div>
+
+
+            <!-- FONT SIZE -->
+            <div id="FontSizeContainer" class="child-container inactive child2">
+                <!-- FONT SIZE Header/Title: -->
+                <div id="fontsize-header" class="child-tool-header">
+                    <p id="fontsize-title" class="child-tool-title">Font Size</p>
+                </div>
+                <!-- Toggle: -->
+                <div id="fontsize-toggle-container" class="child-toggle-container">
+                    <input id="fontsize-toggle" class="child-toggle-button" type="button" value="Enable" />
+                </div>
+
+                <!-- Letter Space Input: -->
+                <div id="fontsize-input-container" class="input-container">
+                    <input id="fontsize-slider" class="slider-input" type="range" min="1" max="5" value="1.5" step="0.1" />
+                    <br>
+                    <label for="fontsize-num">Original &times; </label>
+                    <input id="fontsize-num" class="num-input" type="number" min="1" max="5" value="1.5" step="0.1" />
+                </div>
+
+                <!-- Lists: -->
+                <div id="fontsize-lists-container" class="input-container">
+                    <input id="fontsize-lists" type="checkbox" value="0" />
+                    <label for="fontsize-lists">Include Lists</label>
+                </div>
+            </div>
+
+        </div>
+
+
 
     </main>
 

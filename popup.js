@@ -122,6 +122,46 @@ const SPACING = {
 }
 
 
+// CONST FONT:
+const FONT = {
+    name: "font",
+    main: {
+        active: 0,
+        childrenactive: {
+            family: 0,
+            factor: 0
+        },
+        collapsed: 1,
+        input: {
+            family: "",
+            factor: 1.5
+        }
+    },
+    elements: {
+        container: document.querySelector('#FontContainer'),
+        childcontainers: {
+            family: document.querySelector('#FontFamContainer'),
+            factor: document.querySelector('#FontSizeContainer')
+        },
+        header: document.querySelector('#font-header'),
+        onoff: document.querySelector('#font-on-off'),
+        childrentoggles: {
+            family: document.querySelector('#fontfam-toggle'),
+            factor: document.querySelector('#fontsize-toggle')
+        },
+        input: {
+            factor: {
+                slider: document.querySelector('#fontsize-slider'),
+                num: document.querySelector('#fintsize-num')
+            }
+        },
+        select: {
+            family: document.querySelector('input[name=fontfam]')
+        }
+    }
+}
+
+
 
 
 
@@ -216,7 +256,7 @@ function updateFromStorage(fromstorage, Tool) {
 
 // PAGE LOAD Event (update popup els from storage):
 function onPageLoad() {
-    chrome.storage.local.get(['lha', 'ruler', 'spacing'], items => {
+    chrome.storage.local.get(['lha', 'ruler', 'spacing', 'font'], items => {
         if (items.lha) {
             updateFromStorage(items.lha, LHA);
         }
@@ -225,6 +265,9 @@ function onPageLoad() {
         }
         if (items.spacing) {
             updateFromStorage(items.spacing, SPACING);
+        }
+        if (items.font) {
+            updateFromStorage(items.font, FONT);
         }
     });
 }
@@ -267,6 +310,10 @@ RULER.elements.header.addEventListener('click', event => {
     headerEvent(RULER);
 });
 
+// Font:
+FONT.elements.header.addEventListener('click', event => {
+    headerEvent(FONT);
+});
 
 
 
@@ -297,7 +344,7 @@ function toggleEvent(Tool) {
 function childToggleEvent(Tool, child, sibling) {
 
     if (Tool.main.childrenactive[child] == 0) {
-        
+
         Tool.main.active = 1;
         Tool.elements.container.classList.remove("inactive");
         Tool.elements.onoff.textContent = "ON";
@@ -305,22 +352,22 @@ function childToggleEvent(Tool, child, sibling) {
         Tool.main.childrenactive[child] = 1;
         Tool.elements.childrentoggles[child].value = "Disable";
         Tool.elements.childcontainers[child].classList.remove("inactive");
-    
+
     } else {
 
         if (Tool.main.childrenactive[sibling] == 0) {
             Tool.main.active = 0;
             Tool.elements.container.classList.add("inactive");
-            Tool.elements.onoff.textContent = "OFF";    
+            Tool.elements.onoff.textContent = "OFF";
         }
 
         Tool.main.childrenactive[child] = 0;
         Tool.elements.childrentoggles[child].value = "Enable";
-        Tool.elements.childcontainers[child].classList.add("inactive");    
+        Tool.elements.childcontainers[child].classList.add("inactive");
     }
 
     saveLocal(Tool.name, Tool.main);
-    sendMessage(Tool.name, Tool.main);    
+    sendMessage(Tool.name, Tool.main);
 }
 
 
@@ -343,9 +390,16 @@ RULER.elements.toggle.addEventListener('click', event => {
 SPACING.elements.childrentoggles.wordsp.addEventListener('click', event => {
     childToggleEvent(SPACING, "wordsp", "lettersp");
 });
-
 SPACING.elements.childrentoggles.lettersp.addEventListener('click', event => {
     childToggleEvent(SPACING, "lettersp", "wordsp");
+});
+
+// Font:
+FONT.elements.childrentoggles.family.addEventListener('click', event => {
+    childToggleEvent(FONT, "family", "factor");
+});
+FONT.elements.childrentoggles.factor.addEventListener('click', event => {
+    childToggleEvent(FONT, "factor", "family");
 });
 
 

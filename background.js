@@ -9,7 +9,7 @@ function toggleIcon() {
             chrome.tabs.query({currentWindow: true}, function(tabs) {
                 for (let i in tabs) {
                     chrome.browserAction.setIcon({
-                        path: "images/icon32active.png",
+                        path: "images/icon32.png",
                         tabId: tabs[i].id
                     });
                 }
