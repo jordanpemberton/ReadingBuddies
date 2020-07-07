@@ -133,8 +133,10 @@ const FONT = {
         },
         collapsed: 1,
         input: {
-            family: "",
-            factor: 1.5
+            family: "arial",
+            factor: 1.5,
+            familylists: 0,
+            factorlists: 0
         }
     },
     elements: {
@@ -152,11 +154,15 @@ const FONT = {
         input: {
             factor: {
                 slider: document.querySelector('#fontsize-slider'),
-                num: document.querySelector('#fintsize-num')
+                num: document.querySelector('#fontsize-num')
             }
         },
         select: {
-            family: document.querySelector('input[name=fontfam]')
+            family: document.querySelector('select[name=fontfam]')
+        },
+        checkboxes: {
+            familylists: document.querySelector('#fontfam-lists'),
+            factorlists: document.querySelector('#fontsize-lists')
         }
     }
 }
@@ -241,12 +247,18 @@ function updateFromStorage(fromstorage, Tool) {
             if (partner !== null) {
                 partner.value = value;
             }
+
         // Checkboxes:
         } else if (Tool.elements.checkboxes[field]) {
             if (value == 1) {
                 Tool.elements.checkboxes[field].checked = true;
             }
+
+        // Select:
+        } else if (Tool.elements.select[field]) {    
+            document.querySelector(`option#${value}`).selected = true;
         }
+
     }
 }
 
@@ -433,18 +445,18 @@ function addInputListener(Tool, field, primary, partner=null) {
 // Get Input Elements:
 function getInputElements(Tool) {
     let input = Tool.elements.input;
-    for (let [field, info] of Object.entries(input)) {
+    for (let [field, items] of Object.entries(input)) {
         let i=0;
         let primary;
         let partner;
-        for (let [name, element] of Object.entries(info)) {
-            if (i=== 0) {
+        for (let [name, element] of Object.entries(items)) {
+            if (i===0) {
                 primary = element;
             }
             if (i===1) {
                 partner = element;
             }
-            i+=1;
+            i++;
         }
         addInputListener(Tool, field, primary, partner);
     }
@@ -461,13 +473,38 @@ getInputElements(RULER);
 // SPACING input:
 getInputElements(SPACING);
 
+// FONT input:
+getInputElements(FONT);
+
+
+
+// SELECT:
+
+// Select Event:
+function selectEvent(Tool, field, value) {
+    Tool.main.input[field] = value;
+    Tool.elements.select[field].selected = true;
+    saveLocal(Tool.name, Tool.main);
+    sendMessage(Tool.name, Tool.main);
+}
+
+
+// Add Select Listeners:
+
+// Font Family:
+FONT.elements.select.family.addEventListener('change', event => {
+    console.log(event.target.value);
+    selectEvent(FONT, "family", event.target.value);
+})
+
+
+
 
 
 
 // CHECKBOXES:
 
-
-// Add Checkbox Listener:
+// Add Checkbox Listeners, Event:
 function checkboxEvent(Tool, field, partner=null, rival=null) {
     Tool.elements.checkboxes[field].addEventListener('input', function() {
         if (this.checked) {
@@ -490,10 +527,15 @@ function checkboxEvent(Tool, field, partner=null, rival=null) {
     });
 }
 
+// Lists:
 checkboxEvent(LHA, 'lists');
 checkboxEvent(SPACING, 'wordsplists');
 checkboxEvent(SPACING, 'lettersplists');
+checkboxEvent(FONT, 'familylists');
+checkboxEvent(FONT, 'factorlists');
 
+
+// BW:
 checkboxEvent(RULER, 'black', 'white', RULER.elements.huecontainer);
 checkboxEvent(RULER, 'white', 'black', RULER.elements.huecontainer);
 

@@ -3,7 +3,7 @@ console.log("LHA input: ", lhainput);
 
 
 // Make list of matching els:
-function makeElsList(tag) {
+function makeElsListLHA(tag) {
     let body = document.querySelector('body');
     return body.querySelectorAll(tag);
 }
@@ -14,7 +14,7 @@ function applyLHA(tags, input) {
     let factor = parseFloat(input.factor);
     tags.forEach( function(tag) {
         // Find all tag els:
-        let els = makeElsList(tag);
+        let els = makeElsListLHA(tag);
 
         // Apply:
         for (let i=0; i<els.length; i++) {
@@ -37,11 +37,11 @@ function applyLHA(tags, input) {
     });
 };
 
-// Revert:
-function revert(tags) {
+// revertLHA:
+function revertLHA(tags) {
     tags.forEach( function(tag) {
         // Find els:
-        let els = makeElsList(tag);
+        let els = makeElsListLHA(tag);
 
         for (let i=0; i<els.length; i++) {
             // Remove style property:
@@ -51,19 +51,19 @@ function revert(tags) {
 }
 
 
-// LHA Off --> Revert:
+// LHA Off --> revertLHA:
 if (parseInt(lhainput.active) === 0) {
-    // Revert:
-    revert(["p", "ul", "ol"]);
+    // revertLHA:
+    revertLHA(["p", "ul", "ol"]);
 }
 
 
 // LHA On --> Apply:
 if (parseInt(lhainput.active) === 1) {
     let tags = ["p"];
-    // Lists off --> Revert list els:
+    // Lists off --> revertLHA list els:
     if (parseInt(lhainput.input.lists) === 0) {
-        revert(["ul", "ol"]);
+        revertLHA(["ul", "ol"]);
     // Lists on --> include list els:
     } else {
         tags.push("ul", "ol");

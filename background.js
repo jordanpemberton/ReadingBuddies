@@ -4,12 +4,12 @@
 
 // Extension Icon (Extension Status):
 function toggleIcon() {
-    chrome.storage.local.get(['lha', 'ruler', 'spacing'], items => {
-        if ( items.lha.active == 1 || items.ruler.active == 1 || items.spacing.active == 1 ) {
+    chrome.storage.local.get(['lha', 'ruler', 'spacing', 'font'], items => {
+        if ( items.lha.active == 1 || items.ruler.active == 1 || items.spacing.active == 1 || items.font.active == 1 ) {
             chrome.tabs.query({currentWindow: true}, function(tabs) {
                 for (let i in tabs) {
                     chrome.browserAction.setIcon({
-                        path: "images/icon32.png",
+                        path: "images/icon32active.png",
                         tabId: tabs[i].id
                     });
                 }
@@ -18,7 +18,7 @@ function toggleIcon() {
             chrome.tabs.query({currentWindow: true}, function(tabs) {
                 for (let i in tabs) {
                     chrome.browserAction.setIcon({
-                        path: "images/icon32sleep.png",
+                        path: "images/icon32.png",
                         tabId: tabs[i].id
                     });
                 }
@@ -62,9 +62,13 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     if (request.ruler) {
         applyAllTabs("ruler", request.ruler, true);
     }
-    // WORDSP:
+    // SPACING:
     if (request.spacing) {
         applyAllTabs("spacing", request.spacing, false);
+    }
+    // FONT:
+    if (request.font) {
+        applyAllTabs("font", request.font, false);
     }
 
 });
@@ -78,7 +82,7 @@ chrome.tabs.onUpdated.addListener( function(tabId, changeInfo, tab) {
         // Apply Icon:
         toggleIcon();
 
-        chrome.storage.local.get(['lha', 'ruler', 'spacing'], items => {
+        chrome.storage.local.get(['lha', 'ruler', 'spacing', 'font'], items => {
             // LHA:
             if (items.lha) {
                 applyAllTabs("lha", items.lha, false);
@@ -90,6 +94,10 @@ chrome.tabs.onUpdated.addListener( function(tabId, changeInfo, tab) {
             // SPACING:
             if (items.spacing) {
                 applyAllTabs("spacing", items.spacing, false);
+            }
+            // FONT:
+            if (items.font) {
+                applyAllTabs("font", items.font, false);
             }
         });
     }

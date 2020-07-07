@@ -3,7 +3,7 @@ console.log("SPACING input: ", spacinginput);
 
 
 // Make list of matching els:  **fix for nested els**
-function makeElsListWS(tag) {
+function makeElsListSp(tag) {
     let body = document.querySelector('body');
     return body.querySelectorAll(tag);
 }
@@ -18,7 +18,7 @@ function applySpacing(tags, input, spacingType) {
     tags.forEach( function(tag) {
 
         // Find all tag els:
-        let els = makeElsListWS(tag);
+        let els = makeElsListSp(tag);
 
         // Apply:
         for (let i=0; i<els.length; i++) {
@@ -30,13 +30,13 @@ function applySpacing(tags, input, spacingType) {
     });
 };
 
-// Revert:
-function revert(tags, spacingType) {
-    console.log("Revert!, ", spacingType);
+// revertSp:
+function revertSp(tags, spacingType) {
+    console.log("revertSp!, ", spacingType);
 
     tags.forEach( function(tag) {
         // Find els:
-        let els = makeElsListWS(tag);
+        let els = makeElsListSp(tag);
 
         for (let i=0; i<els.length; i++) {
             // Remove style property:
@@ -47,11 +47,11 @@ function revert(tags, spacingType) {
 }
 
 
-// // SPACING Off --> Revert:
+// // SPACING Off --> revertSp:
 // if (spacinginput.active == 0) {
-//     // Revert:
-//     revert(["p", "ul", "ol"], "wordSpacing");
-//     revert(["p", "ul", "ol"], "letterSpacing");
+//     // revertSp:
+//     revertSp(["p", "ul", "ol"], "wordSpacing");
+//     revertSp(["p", "ul", "ol"], "letterSpacing");
 // } 
 
 // SPACING On --> Apply:
@@ -59,9 +59,9 @@ function revert(tags, spacingType) {
 // Word Spacing:
 if (spacinginput.childrenactive.wordsp == 1) {
     let tags = ["p"];
-    // Lists off --> Revert list els:
+    // Lists off --> revertSp list els:
     if (spacinginput.input.wordsplists == 0) {
-        revert(["ul", "ol"], "wordSpacing");
+        revertSp(["ul", "ol"], "wordSpacing");
     // Lists on --> include list els:
     } else {
         tags.push("ul", "ol");
@@ -69,15 +69,15 @@ if (spacinginput.childrenactive.wordsp == 1) {
     // Apply:
     applySpacing(tags, spacinginput.input.wordspacing, "wordSpacing");
 } else {   
-    revert(["p", "ul", "ol"], "wordSpacing");
+    revertSp(["p", "ul", "ol"], "wordSpacing");
 }
 
 // Letter Spacing:
 if (spacinginput.childrenactive.lettersp == 1) {
     let tags = ["p"];
-    // Lists off --> Revert list els:
+    // Lists off --> revertSp list els:
     if (spacinginput.input.lettersplists == 0) {
-        revert(["ul", "ol"], "letterSpacing");
+        revertSp(["ul", "ol"], "letterSpacing");
     // Lists on --> include list els:
     } else {
         tags.push("ul", "ol");
@@ -85,7 +85,7 @@ if (spacinginput.childrenactive.lettersp == 1) {
     // Apply:
     applySpacing(tags, spacinginput.input.letterspacing, "letterSpacing");
 } else {
-    revert(["p", "ul", "ol"], "letterSpacing");
+    revertSp(["p", "ul", "ol"], "letterSpacing");
 }
 
 

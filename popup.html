@@ -195,9 +195,9 @@
                 <!-- Font Family Input: -->
                 <div id="fontfam-input-container" class="input-container ch-r2c1">
                     <select name="fontfam" id="fontfam">
-                        <option value="arial">Arial</option>
-                        <option value="times">Times New Roman</option>
-                        <option value="comic">Comic Sans</option>
+                        <option id="arial" value="arial" selected>Arial</option>
+                        <option id="times" value="times">Times New Roman</option>
+                        <option id="comic" value="comic">Comic Sans</option>
                     </select>
                     
                 </div>
@@ -223,10 +223,13 @@
 
                 <!-- Letter Space Input: -->
                 <div id="fontsize-input-container" class="input-container">
-                    <input id="fontsize-slider" class="slider-input" type="range" min="1" max="5" value="1.5" step="0.1" />
-                    <br>
-                    <label for="fontsize-num">Original &times; </label>
-                    <input id="fontsize-num" class="num-input" type="number" min="1" max="5" value="1.5" step="0.1" />
+                    <!-- <input id="fontsize-slider" class="slider-input" type="range" min="1" max="5" value="1.5" step="0.1" /> -->
+                    <input id="fontsize-slider" class="slider-input" type="range" min="10" max="32" value="16" step="1" />
+                    <!-- <label for="fontsize-num">Original &times; </label> -->
+                    <label for="fontsize-num">Font Size: 
+                        <input id="fontsize-num" class="num-input" type="number" min="10" max="32" value="16" step="1" />
+                    pt</label>
+                    <!-- <input id="fontsize-num" class="num-input" type="number" min="1" max="5" value="1.5" step="0.1" /> -->
                 </div>
 
                 <!-- Lists: -->
