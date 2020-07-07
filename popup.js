@@ -129,30 +129,30 @@ const FONT = {
         active: 0,
         childrenactive: {
             family: 0,
-            factor: 0
+            size: 0
         },
         collapsed: 1,
         input: {
             family: "arial",
-            factor: 1.5,
+            size: 16,
             familylists: 0,
-            factorlists: 0
+            sizelists: 0
         }
     },
     elements: {
         container: document.querySelector('#FontContainer'),
         childcontainers: {
             family: document.querySelector('#FontFamContainer'),
-            factor: document.querySelector('#FontSizeContainer')
+            size: document.querySelector('#FontSizeContainer')
         },
         header: document.querySelector('#font-header'),
         onoff: document.querySelector('#font-on-off'),
         childrentoggles: {
             family: document.querySelector('#fontfam-toggle'),
-            factor: document.querySelector('#fontsize-toggle')
+            size: document.querySelector('#fontsize-toggle')
         },
         input: {
-            factor: {
+            size: {
                 slider: document.querySelector('#fontsize-slider'),
                 num: document.querySelector('#fontsize-num')
             }
@@ -162,7 +162,7 @@ const FONT = {
         },
         checkboxes: {
             familylists: document.querySelector('#fontfam-lists'),
-            factorlists: document.querySelector('#fontsize-lists')
+            sizelists: document.querySelector('#fontsize-lists')
         }
     }
 }
@@ -408,10 +408,10 @@ SPACING.elements.childrentoggles.lettersp.addEventListener('click', event => {
 
 // Font:
 FONT.elements.childrentoggles.family.addEventListener('click', event => {
-    childToggleEvent(FONT, "family", "factor");
+    childToggleEvent(FONT, "family", "size");
 });
-FONT.elements.childrentoggles.factor.addEventListener('click', event => {
-    childToggleEvent(FONT, "factor", "family");
+FONT.elements.childrentoggles.size.addEventListener('click', event => {
+    childToggleEvent(FONT, "size", "family");
 });
 
 
@@ -532,7 +532,7 @@ checkboxEvent(LHA, 'lists');
 checkboxEvent(SPACING, 'wordsplists');
 checkboxEvent(SPACING, 'lettersplists');
 checkboxEvent(FONT, 'familylists');
-checkboxEvent(FONT, 'factorlists');
+checkboxEvent(FONT, 'sizelists');
 
 
 // BW:
