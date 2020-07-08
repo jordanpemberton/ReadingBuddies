@@ -133,10 +133,10 @@ const FONT = {
         },
         collapsed: 1,
         input: {
-            family: "arial",
-            size: 16,
-            familylists: 0,
-            sizelists: 0
+            family: "Arial, Helvetica, sans-serif",
+            size: 14,
+            // familylists: 0,
+            // sizelists: 0
         }
     },
     elements: {
@@ -160,10 +160,10 @@ const FONT = {
         select: {
             family: document.querySelector('select[name=fontfam]')
         },
-        checkboxes: {
-            familylists: document.querySelector('#fontfam-lists'),
-            sizelists: document.querySelector('#fontsize-lists')
-        }
+        // checkboxes: {
+            // familylists: document.querySelector('#fontfam-lists'),
+            // sizelists: document.querySelector('#fontsize-lists')
+        // }
     }
 }
 
@@ -531,8 +531,9 @@ function checkboxEvent(Tool, field, partner=null, rival=null) {
 checkboxEvent(LHA, 'lists');
 checkboxEvent(SPACING, 'wordsplists');
 checkboxEvent(SPACING, 'lettersplists');
-checkboxEvent(FONT, 'familylists');
-checkboxEvent(FONT, 'sizelists');
+
+// checkboxEvent(FONT, 'familylists');
+// checkboxEvent(FONT, 'sizelists');
 
 
 // BW:
