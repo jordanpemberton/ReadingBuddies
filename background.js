@@ -5,7 +5,30 @@
 // Extension Icon (Extension Status):
 function toggleIcon() {
     chrome.storage.local.get(['lha', 'ruler', 'spacing', 'font'], items => {
-        if ( items.lha.active == 1 || items.ruler.active == 1 || items.spacing.active == 1 || items.font.active == 1 ) {
+        let status = false;
+
+        if (items.lha) {
+            if (items.lha.active == 1) {
+                status = true;
+            }
+        }
+        if (items.ruler) {
+            if (items.ruler.active == 1) {
+                status = true;
+            }
+        }
+        if (items.spacing) {
+            if (items.spacing.active == 1) {
+                status = true;
+            }
+        }
+        if (items.font) {
+            if (items.font.active == 1) {
+                status = true;
+            }
+        }
+
+        if ( status == true ) {
             chrome.tabs.query({currentWindow: true}, function(tabs) {
                 for (let i in tabs) {
                     chrome.browserAction.setIcon({
@@ -53,7 +76,7 @@ function applyAllTabs(toolname, input, css) {
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     // Icon:
     toggleIcon();
-    
+
     // LHA:
     if (request.lha) {
         applyAllTabs("lha", request.lha, false);
