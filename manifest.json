@@ -1,6 +1,6 @@
 {
     "name": "ReadingBuddies",
-    "description": "Tools to help you read! Line height adjust, word and letter spacing adjust, font adjust, and customizable reading ruler.",
+    "description": "Adjust web pages for easier reading!",
     "version": "0.1",
     "permissions": [
         "http://*/*",

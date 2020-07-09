@@ -319,7 +319,7 @@ function toggleEvent(Tool) {
 
 
 // on CHILD TOGGLE Event:
-function childToggleEvent(Tool, child, siblings) {
+function childToggleEvent(Tool, child, sibling) {
     // If child tool is off, turn on:
     if (Tool.main.childrenactive[child] == 0) {
         // Turn child tool on:
@@ -339,10 +339,8 @@ function childToggleEvent(Tool, child, siblings) {
         Tool.elements.childcontainers[child].classList.add("inactive");
         // Check if any sibling tools are on:
         let toolIsOn = false;
-        for (let sibling in siblings) {
-            if (Tool.main.childrenactive[sibling] == 1) {
-                siblingsOn = true;
-            }
+        if (Tool.main.childrenactive[sibling] == 1) {
+            toolIsOn = true;
         }
         // If no siblings are on (all tools are off) --> turn parent tool off:
         if (toolIsOn == false) {
@@ -370,17 +368,17 @@ RULER.elements.toggle.addEventListener('click', event => {
 // CHILD TOGGLE Listeners:
 // Spacing:
 SPACING.elements.childrentoggles.wordsp.addEventListener('click', event => {
-    childToggleEvent(SPACING, "wordsp", ["lettersp"]);
+    childToggleEvent(SPACING, "wordsp", "lettersp");
 });
 SPACING.elements.childrentoggles.lettersp.addEventListener('click', event => {
-    childToggleEvent(SPACING, "lettersp", ["wordsp"]);
+    childToggleEvent(SPACING, "lettersp", "wordsp");
 });
 // Font:
 FONT.elements.childrentoggles.family.addEventListener('click', event => {
-    childToggleEvent(FONT, "family", ["size"]);
+    childToggleEvent(FONT, "family", "size");
 });
 FONT.elements.childrentoggles.size.addEventListener('click', event => {
-    childToggleEvent(FONT, "size", ["family"]);
+    childToggleEvent(FONT, "size", "family");
 });
 
 
