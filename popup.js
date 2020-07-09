@@ -1,5 +1,4 @@
 'use strict';
-
 // Testing:
 // chrome.storage.local.clear();
 
@@ -30,7 +29,6 @@ const LHA = {
         }
     }
 }
-
 
 // CONST RULER:
 const RULER = {
@@ -74,7 +72,6 @@ const RULER = {
     }
 }
 
-
 // CONST SPACING:
 const SPACING = {
     name: "spacing",
@@ -114,7 +111,6 @@ const SPACING = {
         }
     }
 }
-
 
 // CONST FONT:
 const FONT = {
@@ -156,12 +152,10 @@ const FONT = {
 }
 
 
-
 // SAVE to LOCAL Storage:
 function saveLocal(name, Main) {
     chrome.storage.local.set({[name]: Main});
 }
-
 
 // SEND MESSAGE:
 function sendMessage(name, Main) {
@@ -169,14 +163,11 @@ function sendMessage(name, Main) {
 }
 
 
-
-// UPDATE with Storage Vals (on page load):
+// UPDATE from Local Storage on page load:
 function updateFromStorage(fromstorage, Tool) {
     // Update Tool:
     Tool.main = fromstorage;
-
     // Apply to Popup:
-
     // Active Status:
     if (Tool.main.active == 1) {
         Tool.elements.onoff.textContent = "ON";
@@ -191,7 +182,6 @@ function updateFromStorage(fromstorage, Tool) {
         }
         Tool.elements.container.classList.add("inactive");
     }
-
     // Child tools status/ toggles:
     if (Tool.main.childrenactive) {
         for (let [child, status] of Object.entries(Tool.main.childrenactive)) {
@@ -204,23 +194,19 @@ function updateFromStorage(fromstorage, Tool) {
             }
         }
     }
-
     // Collapsed:
     if (Tool.main.collapsed == 0) {
         Tool.elements.container.classList.remove("collapsed");
     } else {
         Tool.elements.container.classList.add("collapsed");
     }
-
     // Input Vals:
     for (let [field, value] of Object.entries(Tool.main.input)) {
-
         // Input:
         if (Tool.elements.input[field]) {
             let i = 0;
             let primary;
             let partner;
-
             for (let [item, element] of Object.entries(Tool.elements.input[field])) {
                 if (i === 0) {
                     primary = element;
@@ -234,7 +220,6 @@ function updateFromStorage(fromstorage, Tool) {
                 partner.value = value;
             }
         }
-
         // Checkboxes:
         else if (Tool.elements.checkboxes) {
             if (Tool.elements.checkboxes[field]) {
@@ -243,20 +228,17 @@ function updateFromStorage(fromstorage, Tool) {
                 }
             }
         }
-
         // Select:
         else if (Tool.elements.select) {
             if (Tool.elements.select[field]) {
                 document.querySelector(`option[value="${value}"]`).selected = true;
             }
         }
-
     }
 }
 
 
-
-// PAGE LOAD Event (update popup els from storage):
+// on PAGE LOAD Event (update popup els from storage):
 function onPageLoad() {
     chrome.storage.local.get(['lha', 'ruler', 'spacing', 'font'], items => {
         if (items.lha) {
@@ -274,12 +256,11 @@ function onPageLoad() {
     });
 }
 
-// Page Load Listener:
+// PAGE LOAD Listener:
 document.addEventListener('DOMContentLoaded', onPageLoad);
 
 
-
-// HEADER Event (Expand/Hide):
+// on HEADER Event (Expand/Hide):
 function headerEvent(Tool) {
     if (Tool.main.collapsed == 1) {
         Tool.main.collapsed = 0;
@@ -292,32 +273,26 @@ function headerEvent(Tool) {
     sendMessage(Tool.name, Tool.main);
 }
 
-
 // HEADER Listeners:
-
 // Spacing:
 SPACING.elements.header.addEventListener('click', event => {
     headerEvent(SPACING);
 });
-
 // LHA:
 LHA.elements.header.addEventListener('click', event => {
     headerEvent(LHA);
 });
-
 // Ruler:
 RULER.elements.header.addEventListener('click', event => {
     headerEvent(RULER);
 });
-
 // Font:
 FONT.elements.header.addEventListener('click', event => {
     headerEvent(FONT);
 });
 
 
-
-// TOGGLE Event (Active/Inactive):
+// on main TOGGLE Event (Active/Inactive):
 function toggleEvent(Tool) {
     // If tool is off, turn on:
     if (Tool.main.active == 0) {
@@ -343,28 +318,25 @@ function toggleEvent(Tool) {
 }
 
 
-// CHILD TOGGLE Event:
+// on CHILD TOGGLE Event:
 function childToggleEvent(Tool, child, siblings) {
     // If child tool is off, turn on:
     if (Tool.main.childrenactive[child] == 0) {
-        // Child tool on:
+        // Turn child tool on:
         Tool.main.childrenactive[child] = 1;
         Tool.elements.childrentoggles[child].value = "Disable";
         Tool.elements.childcontainers[child].classList.remove("inactive");
-
-        // Parent tool on:
+        // Turn parent tool on:
         Tool.main.active = 1;
         Tool.elements.container.classList.remove("inactive");
         Tool.elements.onoff.textContent = "ON";
     }
-
     // If child tool is on, turn off:
     else {
         // Turn child tool off:
         Tool.main.childrenactive[child] = 0;
         Tool.elements.childrentoggles[child].value = "Enable";
         Tool.elements.childcontainers[child].classList.add("inactive");
-
         // Check if any sibling tools are on:
         let toolIsOn = false;
         for (let sibling in siblings) {
@@ -372,39 +344,30 @@ function childToggleEvent(Tool, child, siblings) {
                 siblingsOn = true;
             }
         }
-
-        // If no siblings are on, all tools are off --> turn parent tool off:
+        // If no siblings are on (all tools are off) --> turn parent tool off:
         if (toolIsOn == false) {
             Tool.main.active = 0;
             Tool.elements.container.classList.add("inactive");
             Tool.elements.onoff.textContent = "OFF";
         }
     }
-
     // Save, send message:
     saveLocal(Tool.name, Tool.main);
     sendMessage(Tool.name, Tool.main);
 }
 
 
-
-
-
-// TOGGLE Listeners:
-
+// main TOGGLE Listeners:
 // LHA:
 LHA.elements.toggle.addEventListener('click', event => {
     toggleEvent(LHA);
 });
-
 // Ruler:
 RULER.elements.toggle.addEventListener('click', event => {
     toggleEvent(RULER);
 });
 
-
 // CHILD TOGGLE Listeners:
-
 // Spacing:
 SPACING.elements.childrentoggles.wordsp.addEventListener('click', event => {
     childToggleEvent(SPACING, "wordsp", ["lettersp"]);
@@ -412,7 +375,6 @@ SPACING.elements.childrentoggles.wordsp.addEventListener('click', event => {
 SPACING.elements.childrentoggles.lettersp.addEventListener('click', event => {
     childToggleEvent(SPACING, "lettersp", ["wordsp"]);
 });
-
 // Font:
 FONT.elements.childrentoggles.family.addEventListener('click', event => {
     childToggleEvent(FONT, "family", ["size"]);
@@ -422,33 +384,32 @@ FONT.elements.childrentoggles.size.addEventListener('click', event => {
 });
 
 
-
-// INPUT:
-
-// Input Event:
+// on INPUT Event:
 function inputEvent(Tool, field, primary, partner=null) {
+    // Update tool primary, partner inputs:
     Tool.main.input[field] = primary.value;
     if (partner !== null) {
         partner.value = primary.value;
     }
+    // Save, send message:
     saveLocal(Tool.name, Tool.main);
     sendMessage(Tool.name, Tool.main);
 }
 
-// Add Input Listener:
+// add INPUT Listener:
 function addInputListener(Tool, field, primary, partner=null) {
     primary.addEventListener('input', function() {
         inputEvent(Tool, field, primary, partner);
     });
     if (partner !== null) {
         partner.addEventListener('input', function() {
+            // On Input Event:
             inputEvent(Tool, field, partner, primary);
         })
     }
 }
 
-
-// Get Input Elements:
+// Get INPUT Elements:
 function getInputElements(Tool) {
     let input = Tool.elements.input;
     for (let [field, items] of Object.entries(input)) {
@@ -464,92 +425,94 @@ function getInputElements(Tool) {
             }
             i++;
         }
+        // Add Input Listener:
         addInputListener(Tool, field, primary, partner);
     }
 }
 
 
-
+// Get input elements, add input event listeners, on input events:
 // LHA input:
 getInputElements(LHA);
-
 // RULER input:
 getInputElements(RULER);
-
 // SPACING input:
 getInputElements(SPACING);
-
 // FONT input:
 getInputElements(FONT);
 
 
-
-// SELECT:
-// Select Event:
+// on SELECT Event:
 function selectEvent(Tool, field, value) {
+    // Update tool input:
     Tool.main.input[field] = value;
+    // Update popup el selected item:
     Tool.elements.select[field].selected = true;
+    // Save, send message:
     saveLocal(Tool.name, Tool.main);
     sendMessage(Tool.name, Tool.main);
 }
 
-
-// Add Select Listeners:
+// Add SELECT Listeners:
+// FONT select:
 FONT.elements.select.family.addEventListener('change', event => {
     selectEvent(FONT, "family", event.target.value);
 })
 
 
-
-
-
-// CHECKBOXES:
-
-// Add Checkbox Listeners, Event:
+// CHECKBOX Event Listener, Event:
 function checkboxEvent(Tool, field, partner=null, rival=null) {
     Tool.elements.checkboxes[field].addEventListener('input', function() {
+        // If target was checked:
         if (this.checked) {
+            // Update tool input(s), update popup elements:
             Tool.main.input[field] = 1;
             if (partner !== null) {
                 Tool.main.input[partner] = 0;
                 Tool.elements.checkboxes[partner].checked = false;
             }
+            // If rival input, make inactive:
             if (rival !== null) {
                 rival.classList.add('inactive');
             }
-        } else {
+        } 
+        // If target was unchecked:
+        else {
+            // Update tool input, make rival active:
             Tool.main.input[field] = 0;
             if (rival !== null) {
                 rival.classList.remove('inactive');
             }
         }
+        // Save, send message:
         saveLocal(Tool.name, Tool.main);
         sendMessage(Tool.name, Tool.main);
     });
 }
 
-// Lists:
+// Add CHECKBOX Listeners, Events:
+// LHA Lists:
 checkboxEvent(LHA, 'lists');
-
-
-
-// BW:
+// RULER B/W:
 checkboxEvent(RULER, 'black', 'white', RULER.elements.huecontainer);
 checkboxEvent(RULER, 'white', 'black', RULER.elements.huecontainer);
 
 
-
-// HUE CONTAINER Listener:
+// Add RULER HUE CONTAINER Listener (make active on click, make B/W inactive):
 RULER.elements.huecontainer.addEventListener('click', function() {
+    // If black on, turn black off, uncheck:
     if (RULER.main.input.black == 1) {
         RULER.main.input.black = 0;
         RULER.elements.checkboxes.black.checked = false;
     }
+    // If white on, turn white off, uncheck:
     if (RULER.main.input.white == 1) {
         RULER.main.input.white = 0;
         RULER.elements.checkboxes.white.checked = false;
     }
+    // Make Hue container active:
     RULER.elements.huecontainer.classList.remove('inactive');
+    // Save, send message:
     saveLocal(RULER.name, RULER.main);
     sendMessage(RULER.name, RULER.main);
 })

@@ -1,6 +1,3 @@
-// (var rulerinput already injected by BG)
-console.log("Ruler input: ", rulerinput);
-
 var ruler = document.querySelector("#readingRuler");
 
 // If ruler doesn't exist:
@@ -21,6 +18,7 @@ if (rulerinput) {
     let black = rulerinput.input.black;
     let white = rulerinput.input.white;
 
+    // Active/Inactive:
     if (parseInt(active) === 0) {
         ruler.classList.add("inactive");
     } else {

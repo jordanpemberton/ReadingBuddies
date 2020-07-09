@@ -1,6 +1,3 @@
-// (var spacinginput already injected)
-console.log("SPACING input: ", spacinginput);
-
 // Apply:
 function applySpacing(attr, input) {
     input = `${input}em`;

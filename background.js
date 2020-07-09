@@ -1,33 +1,23 @@
 // For testing:
 // chrome.storage.local.clear();
 
-
 // Extension Icon (Extension Status):
 function toggleIcon() {
     chrome.storage.local.get(['lha', 'ruler', 'spacing', 'font'], items => {
         let status = false;
-
-        if (items.lha) {
-            if (items.lha.active == 1) {
-                status = true;
+        // Check status of each item:
+        function checkStatus(item) {
+            if (items[item]) {
+                if (items[item].active == 1) {
+                    status = true;
+                }
             }
         }
-        if (items.ruler) {
-            if (items.ruler.active == 1) {
-                status = true;
-            }
-        }
-        if (items.spacing) {
-            if (items.spacing.active == 1) {
-                status = true;
-            }
-        }
-        if (items.font) {
-            if (items.font.active == 1) {
-                status = true;
-            }
-        }
-
+        checkStatus('lha');
+        checkStatus('ruler');
+        checkStatus('spacing');
+        checkStatus('font');
+        // Ext is on, use active icon:
         if ( status == true ) {
             chrome.tabs.query({currentWindow: true}, function(tabs) {
                 for (let i in tabs) {
@@ -37,7 +27,9 @@ function toggleIcon() {
                     });
                 }
             });
-        } else {
+        } 
+        // Ext is off, use inactive icon:
+        else {
             chrome.tabs.query({currentWindow: true}, function(tabs) {
                 for (let i in tabs) {
                     chrome.browserAction.setIcon({
@@ -49,7 +41,6 @@ function toggleIcon() {
         }
     });
 }
-
 
 
 // Apply All Tabs:
@@ -76,26 +67,17 @@ function applyAllTabs(toolname, input, css) {
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     // Icon:
     toggleIcon();
-
-    // LHA:
-    if (request.lha) {
-        applyAllTabs("lha", request.lha, false);
+    // Check each tool, apply:
+    function checkReq(item, css) {
+        if (request[item]) {
+            applyAllTabs(item, request[item], css);
+        }
     }
-    // RULER:
-    if (request.ruler) {
-        applyAllTabs("ruler", request.ruler, true);
-    }
-    // SPACING:
-    if (request.spacing) {
-        applyAllTabs("spacing", request.spacing, false);
-    }
-    // FONT:
-    if (request.font) {
-        applyAllTabs("font", request.font, false);
-    }
-
+    checkReq('lha', false);
+    checkReq('ruler', true);
+    checkReq('spacing', false);
+    checkReq('font', false);
 });
-
 
 
 // On tab update:
@@ -104,24 +86,17 @@ chrome.tabs.onUpdated.addListener( function(tabId, changeInfo, tab) {
     if (changeInfo.status == 'complete') {
         // Apply Icon:
         toggleIcon();
-
+        // Get items from local, apply:
         chrome.storage.local.get(['lha', 'ruler', 'spacing', 'font'], items => {
-            // LHA:
-            if (items.lha) {
-                applyAllTabs("lha", items.lha, false);
+            function checkItem(item, css) {
+                if (items[item]) {
+                    applyAllTabs(item, items[item], css);
+                }
             }
-            // RULER:
-            if (items.ruler) {
-                applyAllTabs("ruler", items.ruler, true);
-            }
-            // SPACING:
-            if (items.spacing) {
-                applyAllTabs("spacing", items.spacing, false);
-            }
-            // FONT:
-            if (items.font) {
-                applyAllTabs("font", items.font, false);
-            }
+            checkItem('lha', false);
+            checkItem('ruler', true);
+            checkItem('spacing', false);
+            checkItem('font', false);
         });
     }
 });

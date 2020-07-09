@@ -1,6 +1,3 @@
-// (var fontinput already injected)
-console.log("FONT input: ", fontinput);
-
 // Apply:
 function applyFont(attr, input) {
     if (attr == "font-size") {
