@@ -11,17 +11,18 @@ function applyFont(attr, input) {
 
 // Revert:
 function revertFont(attr) {
-    document.querySelector('body').style.removeProperty(`${attr}`);
+    document.querySelector('body').style.removeProperty(attr);
 }
 
 // If active Apply, else Revert:
-function checkStatus(active, input, attr) {
-    if (active == 1) {
-        applyFont(attr, input);
+function checkStatusFont(input, name, attr) {
+    if (input.childrenactive[name] == 1) {
+        applyFont(attr, input.input[name]);
     } else {
         revertFont(attr);
     }
 }
 
-checkStatus(fontinput.childrenactive.family, fontinput.input.family, "font-family");
-checkStatus(fontinput.childrenactive.size, fontinput.input.size, "font-size");
+// Call checkStatusFont:
+checkStatusFont(fontinput, "family", "font-family");
+checkStatusFont(fontinput, "size", "font-size");

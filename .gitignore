@@ -6,5 +6,6 @@ divselect.css
 popupWordSp.js
 popupDraft.js
 findEls.js
-fontByTags.js
+fontByTag.js
+spacingByTag.js
 font.css

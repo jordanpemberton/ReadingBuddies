@@ -86,10 +86,8 @@ const SPACING = {
         },
         collapsed: 1,
         input: {
-            wordspacing: 0.4,
-            wordsplists: 0,
-            letterspacing: 0.04,
-            lettersplists: 0
+            wordsp: 0.5,
+            lettersp: 0.1,
         }
     },
     elements: {
@@ -105,18 +103,14 @@ const SPACING = {
             lettersp: document.querySelector('#lettersp-toggle')
         },
         input: {
-            wordspacing: {
+            wordsp: {
                 slider: document.querySelector('#wordsp-slider'),
                 num: document.querySelector('#wordsp-num')
             },
-            letterspacing: {
+            lettersp: {
                 slider: document.querySelector('#lettersp-slider'),
                 num: document.querySelector('#lettersp-num')
             }
-        },
-        checkboxes: {
-            wordsplists: document.querySelector('#wordsp-lists'),
-            lettersplists: document.querySelector('#lettersp-lists')
         }
     }
 }
@@ -134,9 +128,7 @@ const FONT = {
         collapsed: 1,
         input: {
             family: "Arial, Helvetica, sans-serif",
-            size: 14,
-            // familylists: 0,
-            // sizelists: 0
+            size: 14
         }
     },
     elements: {
@@ -159,16 +151,9 @@ const FONT = {
         },
         select: {
             family: document.querySelector('select[name=fontfam]')
-        },
-        // checkboxes: {
-            // familylists: document.querySelector('#fontfam-lists'),
-            // sizelists: document.querySelector('#fontsize-lists')
-        // }
+        }
     }
 }
-
-
-
 
 
 
@@ -182,7 +167,6 @@ function saveLocal(name, Main) {
 function sendMessage(name, Main) {
     chrome.runtime.sendMessage({[name]: Main});
 }
-
 
 
 
@@ -230,11 +214,13 @@ function updateFromStorage(fromstorage, Tool) {
 
     // Input Vals:
     for (let [field, value] of Object.entries(Tool.main.input)) {
-        let i = 0;
-        let primary;
-        let partner;
+
         // Input:
         if (Tool.elements.input[field]) {
+            let i = 0;
+            let primary;
+            let partner;
+
             for (let [item, element] of Object.entries(Tool.elements.input[field])) {
                 if (i === 0) {
                     primary = element;
@@ -247,22 +233,26 @@ function updateFromStorage(fromstorage, Tool) {
             if (partner !== null) {
                 partner.value = value;
             }
+        }
 
         // Checkboxes:
-        } else if (Tool.elements.checkboxes[field]) {
-            if (value == 1) {
-                Tool.elements.checkboxes[field].checked = true;
+        else if (Tool.elements.checkboxes) {
+            if (Tool.elements.checkboxes[field]) {
+                if (value == 1) {
+                    Tool.elements.checkboxes[field].checked = true;
+                }
             }
+        }
 
         // Select:
-        } else if (Tool.elements.select[field]) {    
-            document.querySelector(`option#${value}`).selected = true;
+        else if (Tool.elements.select) {
+            if (Tool.elements.select[field]) {
+                document.querySelector(`option[value="${value}"]`).selected = true;
+            }
         }
 
     }
 }
-
-
 
 
 
@@ -286,8 +276,6 @@ function onPageLoad() {
 
 // Page Load Listener:
 document.addEventListener('DOMContentLoaded', onPageLoad);
-
-
 
 
 
@@ -329,9 +317,9 @@ FONT.elements.header.addEventListener('click', event => {
 
 
 
-
 // TOGGLE Event (Active/Inactive):
 function toggleEvent(Tool) {
+    // If tool is off, turn on:
     if (Tool.main.active == 0) {
         Tool.main.active = 1;
         Tool.elements.onoff.textContent = "ON";
@@ -339,7 +327,9 @@ function toggleEvent(Tool) {
             Tool.elements.toggle.value = "Disable";
         }
         Tool.elements.container.classList.remove("inactive");
-    } else {
+    }
+    // If tool is on, turn off:
+    else {
         Tool.main.active = 0;
         Tool.elements.onoff.textContent = "OFF";
         if (Tool.elements.toggle) {
@@ -347,37 +337,51 @@ function toggleEvent(Tool) {
         }
         Tool.elements.container.classList.add("inactive");
     }
+    // Save, send message:
     saveLocal(Tool.name, Tool.main);
     sendMessage(Tool.name, Tool.main);
 }
 
 
 // CHILD TOGGLE Event:
-function childToggleEvent(Tool, child, sibling) {
-
+function childToggleEvent(Tool, child, siblings) {
+    // If child tool is off, turn on:
     if (Tool.main.childrenactive[child] == 0) {
-
-        Tool.main.active = 1;
-        Tool.elements.container.classList.remove("inactive");
-        Tool.elements.onoff.textContent = "ON";
-
+        // Child tool on:
         Tool.main.childrenactive[child] = 1;
         Tool.elements.childrentoggles[child].value = "Disable";
         Tool.elements.childcontainers[child].classList.remove("inactive");
 
-    } else {
+        // Parent tool on:
+        Tool.main.active = 1;
+        Tool.elements.container.classList.remove("inactive");
+        Tool.elements.onoff.textContent = "ON";
+    }
 
-        if (Tool.main.childrenactive[sibling] == 0) {
+    // If child tool is on, turn off:
+    else {
+        // Turn child tool off:
+        Tool.main.childrenactive[child] = 0;
+        Tool.elements.childrentoggles[child].value = "Enable";
+        Tool.elements.childcontainers[child].classList.add("inactive");
+
+        // Check if any sibling tools are on:
+        let toolIsOn = false;
+        for (let sibling in siblings) {
+            if (Tool.main.childrenactive[sibling] == 1) {
+                siblingsOn = true;
+            }
+        }
+
+        // If no siblings are on, all tools are off --> turn parent tool off:
+        if (toolIsOn == false) {
             Tool.main.active = 0;
             Tool.elements.container.classList.add("inactive");
             Tool.elements.onoff.textContent = "OFF";
         }
-
-        Tool.main.childrenactive[child] = 0;
-        Tool.elements.childrentoggles[child].value = "Enable";
-        Tool.elements.childcontainers[child].classList.add("inactive");
     }
 
+    // Save, send message:
     saveLocal(Tool.name, Tool.main);
     sendMessage(Tool.name, Tool.main);
 }
@@ -398,22 +402,24 @@ RULER.elements.toggle.addEventListener('click', event => {
     toggleEvent(RULER);
 });
 
+
+// CHILD TOGGLE Listeners:
+
 // Spacing:
 SPACING.elements.childrentoggles.wordsp.addEventListener('click', event => {
-    childToggleEvent(SPACING, "wordsp", "lettersp");
+    childToggleEvent(SPACING, "wordsp", ["lettersp"]);
 });
 SPACING.elements.childrentoggles.lettersp.addEventListener('click', event => {
-    childToggleEvent(SPACING, "lettersp", "wordsp");
+    childToggleEvent(SPACING, "lettersp", ["wordsp"]);
 });
 
 // Font:
 FONT.elements.childrentoggles.family.addEventListener('click', event => {
-    childToggleEvent(FONT, "family", "size");
+    childToggleEvent(FONT, "family", ["size"]);
 });
 FONT.elements.childrentoggles.size.addEventListener('click', event => {
-    childToggleEvent(FONT, "size", "family");
+    childToggleEvent(FONT, "size", ["family"]);
 });
-
 
 
 
@@ -479,7 +485,6 @@ getInputElements(FONT);
 
 
 // SELECT:
-
 // Select Event:
 function selectEvent(Tool, field, value) {
     Tool.main.input[field] = value;
@@ -490,13 +495,9 @@ function selectEvent(Tool, field, value) {
 
 
 // Add Select Listeners:
-
-// Font Family:
 FONT.elements.select.family.addEventListener('change', event => {
-    console.log(event.target.value);
     selectEvent(FONT, "family", event.target.value);
 })
-
 
 
 
@@ -529,11 +530,7 @@ function checkboxEvent(Tool, field, partner=null, rival=null) {
 
 // Lists:
 checkboxEvent(LHA, 'lists');
-checkboxEvent(SPACING, 'wordsplists');
-checkboxEvent(SPACING, 'lettersplists');
 
-// checkboxEvent(FONT, 'familylists');
-// checkboxEvent(FONT, 'sizelists');
 
 
 // BW:

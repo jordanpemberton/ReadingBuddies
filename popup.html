@@ -124,18 +124,18 @@
 
                 <!-- Word Space Input: -->
                 <div id="wordsp-input-container" class="input-container ch-r2c1">
-                    <input id="wordsp-slider" class="slider-input" type="range" min="0.1" max="1.5" value="0.4" step="0.1" />
+                    <input id="wordsp-slider" class="slider-input" type="range" min="0" max="1.5" value="0.5" step="0.1" />
                     <br>
                     <label for="wordsp-num">Word Spacing:
-                        <input id="wordsp-num" class="num-input" type="number" min="0.1" max="1.5" value="0.4" step="0.1" />
+                        <input id="wordsp-num" class="num-input" type="number" min="0" max="1.5" value="0.5" step="0.1" />
                     em</label>
                 </div>
 
                 <!-- Lists: -->
-                <div id="wordsp-lists-container" class="input-container r2-c2">
+                <!-- <div id="wordsp-lists-container" class="input-container r2-c2">
                     <input id="wordsp-lists" type="checkbox" value="0" />
                     <label for="wordsp-lists">Include Lists</label>
-                </div>
+                </div> -->
             </div>
 
 
@@ -154,18 +154,18 @@
 
                 <!-- Letter Space Input: -->
                 <div id="lettersp-input-container" class="input-container">
-                    <input id="lettersp-slider" class="slider-input" type="range" min="0" max="0.5" value="0.1" step="0.01" />
+                    <input id="lettersp-slider" class="slider-input" type="range" min="0" max="0.33" value="0.1" step="0.01" />
                     <br>
                     <label for="lettersp-num">Letter Spacing:
-                        <input id="lettersp-num" class="num-input" type="number" min="0" max="0.5" value="0.1" step="0.01" />
+                        <input id="lettersp-num" class="num-input" type="number" min="0" max="0.33" value="0.1" step="0.01" />
                     em</label>
                 </div>
 
                 <!-- Lists: -->
-                <div id="lettersp-lists-container" class="input-container">
+                <!-- <div id="lettersp-lists-container" class="input-container">
                     <input id="lettersp-lists" type="checkbox" value="0" />
                     <label for="lettersp-lists">Include Lists</label>
-                </div>
+                </div> -->
             </div>
 
         </div>
@@ -195,18 +195,25 @@
                 <!-- Font Family Input: -->
                 <div id="fontfam-input-container" class="input-container ch-r2c1">
                     <select name="fontfam" id="fontfam">
-                        <option id="arial" value="Arial, Helvetica, sans-serif" selected>Arial</option>
-                        <option id="times" value="'Times New Roman', Times, serif">Times New Roman</option>
+
+                        <option id="arial" value="Arial, sans-serif" selected>Arial</option>
+                        <option id="calibri" value="Calibri, sans-serif">Calibri</option>
                         <option id="comic" value="'Comic Sans MS', cursive, sans-serif">Comic Sans</option>
+                        <option id="courier" value="'Courier New', Courier, monospace">Courier</option>
+                        <option id="georgia" value="Georgia, serif">Georgia</option>
+                        <option id="gillsans" value="'Gill Sans', 'Gill Sans MT', sans-serif">Gill Sans</option>
+                        <option id="lucidaconsole" value="'Lucida Console', Monaco, monospoace">Lucida Console</option>
+                        <option id="lucidasans" value="'Lucida Sans', 'Lucida Sans Regular', 'Lucida Sans Unicode', sans-serif">Lucida Sans</option>
+                        <option id="segoe" value="'Segoe UI', sans-serif">Segoe UI</option>
+                        <option id="tahoma" value="Tahoma, sans-serif">Tahoma</option>
+                        <option id="times" value="'Times New Roman', Times, serif">Times New Roman</option>
+                        <option id="trebuchet" value="'Trebuchet MS', sans-serif">Trebuchet MS</option>
+                        <option id="verdana" value="Verdana, sans-serif">Verdana</option>
+
                     </select>
-                    
+
                 </div>
 
-                <!-- Lists: -->
-                <!-- <div id="fontfam-lists-container" class="input-container r2-c2">
-                    <input id="fontfam-lists" type="checkbox" value="0" />
-                    <label for="fontfam-lists">Include Lists</label>
-                </div> -->
 
             </div>
 
@@ -225,18 +232,14 @@
                 <!-- Letter Space Input: -->
                 <div id="fontsize-input-container" class="input-container">
                     <input id="fontsize-slider" class="slider-input" type="range" min="8" max="24" value="14" step="1" />
-                    <label for="fontsize-num">Font Size: 
+                    <label for="fontsize-num">Font Size:
                         <input id="fontsize-num" class="num-input" type="number" min="8" max="24" value="14" step="1" />
                     pt</label>
                 </div>
 
-                <!-- Lists: -->
-                <!-- <div id="fontsize-lists-container" class="input-container">
-                    <input id="fontsize-lists" type="checkbox" value="0" />
-                    <label for="fontsize-lists">Include Lists</label>
-                </div> -->
-
             </div>
+
+            
 
         </div>
 
@@ -246,7 +249,6 @@
 
 
     <script type="text/javascript" src="popup.js"></script>
-    <!-- <script type="text/javascript" src="popupDivSelect.js"></script> -->
 
 </body>
 </html>
