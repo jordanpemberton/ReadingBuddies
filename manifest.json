@@ -5,9 +5,7 @@
     "permissions": [
         "http://*/*",
         "https://*/*",
-        "file://*/*",
-        "activeTab",
-        "tabs",
+        "tabs", 
         "storage"
     ],
     "background": {
