@@ -13,5 +13,10 @@ Includes:
 
 * Font adjust
 
+
+![Screengrab A](/images/documentationImages/screengrabA.png)
+
 ![icon128](/images/icon128.png)
+
+
 
