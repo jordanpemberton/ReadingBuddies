@@ -3,7 +3,7 @@
 
 __Download ReadingBuddies from the Chrome Web Store: https://chrome.google.com/webstore/detail/readingbuddies/adfjlknhfdbnfajbdlhilnbepfnemigm/__
 
-Includes: 
+## Includes
 
 * Line height adjust
 
@@ -13,8 +13,12 @@ Includes:
 
 * Font adjust
 
+<br>
+
 
 ![Screengrab A](/images/documentationImages/screengrabA.png)
+
+<br>
 
 ![icon128](/images/icon128.png)
 
